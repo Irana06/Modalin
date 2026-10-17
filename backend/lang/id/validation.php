@@ -1,0 +1,47 @@
+<?php
+
+// Only the rules Modalin uses; anything else falls back to English.
+return [
+    'boolean' => ':Attribute harus bernilai ya atau tidak.',
+    'confirmed' => 'Konfirmasi :attribute tidak cocok.',
+    'digits' => ':Attribute harus :digits digit angka.',
+    'email' => ':Attribute harus berupa alamat email yang valid.',
+    'exists' => ':Attribute yang dipilih tidak tersedia.',
+    'gte' => ['numeric' => ':Attribute harus lebih besar atau sama dengan :value.'],
+    'in' => ':Attribute yang dipilih tidak valid.',
+    'integer' => ':Attribute harus berupa angka bulat.',
+    'max' => ['numeric' => ':Attribute maksimal :max.', 'string' => ':Attribute maksimal :max karakter.'],
+    'min' => ['numeric' => ':Attribute minimal :min.', 'string' => ':Attribute minimal :min karakter.'],
+    'numeric' => ':Attribute harus berupa angka.',
+    'required' => ':Attribute wajib diisi.',
+    'required_if' => ':Attribute wajib diisi.',
+    'string' => ':Attribute harus berupa teks.',
+    'unique' => ':Attribute sudah terdaftar.',
+    'password' => [
+        'letters' => ':Attribute harus mengandung huruf.',
+        'numbers' => ':Attribute harus mengandung angka.',
+    ],
+
+    'attributes' => [
+        'name' => 'nama',
+        'business_name' => 'nama usaha',
+        'nib' => 'NIB',
+        'sector' => 'sektor',
+        'address' => 'alamat',
+        'monthly_revenue' => 'omzet bulanan',
+        'established_year' => 'tahun berdiri',
+        'loan_product_id' => 'produk',
+        'amount' => 'jumlah pinjaman',
+        'tenor_months' => 'tenor',
+        'purpose' => 'tujuan penggunaan dana',
+        'decision' => 'keputusan',
+        'note' => 'catatan',
+        'interest_rate' => 'bunga',
+        'min_amount' => 'jumlah minimal',
+        'max_amount' => 'jumlah maksimal',
+        'min_tenor' => 'tenor minimal',
+        'max_tenor' => 'tenor maksimal',
+        'is_active' => 'status aktif',
+        'role' => 'peran',
+    ],
+];
