@@ -36,7 +36,7 @@ export default function AppLayout() {
       <div className="flex items-center justify-between border-b border-line bg-paper-deep px-4 py-3 lg:hidden">
         <Logo to="/app" className="text-xl" />
         <button onClick={() => setMenuOpen(!menuOpen)} aria-expanded={menuOpen} aria-controls="sidebar"
-          className="inline-flex min-h-11 items-center rounded-lg border border-line-strong px-4 text-sm font-bold">
+          className="inline-flex min-h-11 items-center rounded-lg border border-line-strong px-4 text-sm font-bold hover:border-ink hover:bg-surface aria-expanded:bg-surface">
           Menu
         </button>
       </div>

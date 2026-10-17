@@ -60,7 +60,7 @@ export default function Login() {
                 onChange={(e) => setForm({ ...form, email: e.target.value })} className={inputClass} />
             </Field>
             <Field label="Password" error={errors.password}>
-              <div className="flex rounded-lg border border-line-strong bg-surface has-[[aria-invalid=true]]:border-shu-deep">
+              <div className="flex rounded-lg border border-line-strong bg-surface transition-colors hover:border-ink-muted has-[[aria-invalid=true]]:border-shu-deep">
                 <input type={showPassword ? 'text' : 'password'} autoComplete="current-password" value={form.password} aria-invalid={!!errors.password}
                   onChange={(e) => setForm({ ...form, password: e.target.value })} className="min-h-12 w-full rounded-lg bg-transparent px-3 outline-none" />
                 <button type="button" onClick={() => setShowPassword(!showPassword)} className="min-w-16 px-3 text-sm font-bold text-ink-muted hover:text-ink"

@@ -4,7 +4,7 @@ import { STATUS, digits, formatDate } from '../lib/format'
 
 export function Logo({ to = '/', className = 'text-2xl' }) {
   return (
-    <Link to={to} className={`font-display font-bold ${className}`}>
+    <Link to={to} className={`font-display font-bold hover:opacity-75 ${className}`}>
       Modal<span className="text-shu">in</span>
     </Link>
   )
@@ -35,7 +35,7 @@ export function Button({ variant = 'primary', loading = false, className = '', c
 }
 
 export const inputClass =
-  'min-h-12 w-full rounded-lg border border-line-strong bg-surface px-3 aria-[invalid=true]:border-shu-deep'
+  'min-h-12 w-full rounded-lg border border-line-strong bg-surface px-3 hover:border-ink-muted aria-[invalid=true]:border-shu-deep'
 
 export function Field({ label, error, hint, children, className = '' }) {
   return (
@@ -51,7 +51,7 @@ export function Field({ label, error, hint, children, className = '' }) {
 /** Text input that shows rupiah with thousand separators but reports a plain number. */
 export function MoneyInput({ value, onChange, invalid, ...props }) {
   return (
-    <div className="flex min-h-12 items-center rounded-lg border border-line-strong bg-surface px-3 has-[[aria-invalid=true]]:border-shu-deep">
+    <div className="flex min-h-12 items-center rounded-lg border border-line-strong bg-surface px-3 transition-colors hover:border-ink-muted has-[[aria-invalid=true]]:border-shu-deep">
       <span className="text-ink-muted">Rp</span>
       <input
         inputMode="numeric"

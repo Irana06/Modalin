@@ -33,7 +33,7 @@ export default function Applications() {
       <div className="mt-6 flex gap-1 overflow-x-auto overflow-y-hidden border-b border-line" role="tablist" aria-label="Filter status">
         {tabs.map(([key, label, count]) => (
           <button key={key} role="tab" aria-selected={filters.status === key} onClick={() => setFilter('status', key)}
-            className={`flex min-h-11 shrink-0 items-center gap-2 border-b-2 px-3 text-sm ${filters.status === key ? 'border-shu font-bold' : 'border-transparent text-ink-muted hover:text-ink'}`}>
+            className={`flex min-h-11 shrink-0 items-center gap-2 rounded-t-lg border-b-2 px-3 text-sm hover:bg-paper-deep ${filters.status === key ? 'border-shu font-bold' : 'border-transparent text-ink-muted hover:text-ink'}`}>
             {label}<span className="rounded bg-paper-deep px-1.5 text-xs tabular-nums">{count}</span>
           </button>
         ))}

@@ -78,7 +78,7 @@ export default function ApplyLoan() {
             <legend className="text-sm font-bold">Produk pembiayaan</legend>
             <div className="mt-3 grid gap-2">
               {products.data.map((p) => (
-                <label key={p.id} className="flex min-h-12 cursor-pointer flex-wrap items-center justify-between gap-x-4 rounded-lg border border-line-strong px-4 py-3 has-checked:border-ink has-checked:bg-paper-deep has-focus-visible:outline-2 has-focus-visible:outline-shu-deep">
+                <label key={p.id} className="flex min-h-12 cursor-pointer flex-wrap items-center justify-between gap-x-4 rounded-lg border border-line-strong px-4 py-3 hover:border-ink-muted hover:bg-paper has-checked:border-ink has-checked:bg-paper-deep has-focus-visible:outline-2 has-focus-visible:outline-shu-deep">
                   <input type="radio" name="product" value={p.id} checked={form.loan_product_id === p.id} onChange={() => update('loan_product_id', p.id)} className="sr-only" />
                   <span className="font-bold">{p.name}</span>
                   <span className="text-sm text-ink-muted tabular-nums">{percent(p.interest_rate)} / tahun · {rupiah(p.min_amount)} s.d. {rupiah(p.max_amount)}</span>

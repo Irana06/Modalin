@@ -42,7 +42,11 @@
   body { @apply bg-paper text-ink font-sans antialiased; }
   h1, h2, h3 { @apply font-display; }
   :focus-visible { outline: 2px solid var(--color-shu-deep); outline-offset: 2px; }
-  a, button, tr { transition: color 150ms, background-color 150ms, border-color 150ms; }
+  a, button, tr, input, select, textarea, label { transition: color 150ms, background-color 150ms, border-color 150ms, opacity 150ms; }
+  /* Tailwind v4 resets buttons to the default cursor; every clickable control gets the pointer back. */
+  button:not(:disabled), select:not(:disabled), [role='tab'], label:has(> input[type='radio']),
+  input[type='range'], input[type='checkbox'] { cursor: pointer; }
+  button:disabled, select:disabled { cursor: not-allowed; }
   dialog::backdrop { background: rgb(53 35 28 / 0.45); }
 }
 
