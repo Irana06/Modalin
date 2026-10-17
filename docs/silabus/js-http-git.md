@@ -1,14 +1,17 @@
-# Minggu 1: Fondasi
+# Minggu 3: JavaScript, HTTP, dan Git
+
+Dikerjakan setelah murid lulus [Tes PHP Dasar](tes/tes-php-dasar.md).
 
 **Target minggu ini.** Murid bisa:
 
 1. Mengolah data array dan objek dengan JavaScript modern
 2. Menjelaskan request dan response HTTP, lalu mencobanya di Postman
-3. Menulis class dan enum PHP sederhana
-4. Commit dan push ke GitHub memakai SSH key
+3. Commit dan push ke GitHub memakai SSH key
 
 **Format:** 3 pertemuan × ±2,5 jam, ditambah tugas rumah ±2 jam.
-**Kenapa ini dulu:** semua kode Modalin berdiri di atas 4 hal ini. Murid yang belum lancar `map`, `filter`, dan `async/await` akan tersendat terus di React. Murid yang belum paham status code akan bingung membaca error API.
+**Kenapa ini sebelum Laravel:** murid yang belum lancar `map`, `filter`, dan `async/await` akan tersendat terus di React. Murid yang belum paham status code akan bingung membaca error API.
+
+Banyak latihan di sini sengaja sama dengan latihan PHP pertemuan 3 (data pengajuan yang sama). Murid jadi bisa fokus ke cara menulisnya di JavaScript, karena logikanya sudah mereka kenal.
 
 ---
 
@@ -34,13 +37,31 @@ npm -v
 git --version
 ```
 
-Buat satu folder kerja, misalnya `D:\latihan-lks\minggu-01`. Semua latihan minggu ini disimpan di sana.
+Buat satu folder kerja, misalnya `D:\latihan-lks\js`. Semua latihan minggu ini disimpan di sana.
 
 ---
 
 ## Pertemuan 1: JavaScript untuk mengolah data
 
 ### Materi (±60 menit)
+
+> **Jelaskan:** "JavaScript mirip PHP yang sudah kita pelajari, dengan beberapa perbedaan. Variabel tidak memakai tanda dolar. Penggabung teks memakai tanda plus atau template literal dengan backtick. Array dan objek JavaScript sama seperti array berindeks dan array asosiatif di PHP. Bedanya, JavaScript punya method array yang sangat sering dipakai di React: `map`, `filter`, `find`, dan `reduce`."
+
+> **Jelaskan dengan analogi** (tulis di papan):
+> - "`map`: setiap barang di keranjang diberi label harga. Jumlah barang tetap, isinya berubah."
+> - "`filter`: dari keranjang, ambil yang harganya di atas Rp10.000 saja. Jumlahnya bisa berkurang."
+> - "`find`: cari satu barang bernama 'Kopi'. Hasilnya satu barang, bukan keranjang."
+> - "`reduce`: hitung total harga semua barang. Hasilnya satu angka."
+
+| PHP | JavaScript |
+| --- | --- |
+| `$nama = 'Sari';` | `const nama = 'Sari'` |
+| `"Halo, $nama"` | `` `Halo, ${nama}` `` |
+| `fn ($p) => $p['kode']` | `(p) => p.kode` |
+| `array_map(fn ..., $a)` | `a.map(...)` |
+| `array_filter($a, fn ...)` | `a.filter(...)` |
+| `array_sum(array_column($a, 'jumlah'))` | `a.reduce((sum, p) => sum + p.jumlah, 0)` |
+| `count($a)` | `a.length` |
 
 | Konsep | Contoh singkat |
 | --- | --- |
@@ -140,6 +161,13 @@ console.log(salinan.jumlah, pengajuan[0].jumlah) // 30000000 25000000
 
 ### Materi (±50 menit)
 
+> **Jelaskan dengan analogi warung:** "Bayangkan kamu memesan di warung. Kamu adalah **client**, dapur adalah **server**.
+> - **Method** adalah jenis permintaanmu: minta lihat menu (`GET`), pesan makanan baru (`POST`), ganti pesanan (`PUT`), batalkan pesanan (`DELETE`).
+> - **URL** adalah meja atau bagian yang kamu tuju.
+> - **Header** adalah catatan tambahan, misalnya 'saya member, ini kartunya'. Kartu member itulah **token**.
+> - **Body** adalah isi pesananmu.
+> - **Status code** adalah jawaban pelayan: 200 'siap', 201 'pesanan dicatat', 401 'tunjukkan kartu member dulu', 403 'menu ini khusus karyawan', 404 'menu itu tidak ada', 422 'pesananmu tidak lengkap', 429 'sabar, kamu pesan terlalu sering', 500 'dapur sedang bermasalah'."
+
 **Alur dasar:** browser atau Postman (client) mengirim **request**, lalu server Laravel membalas dengan **response**.
 
 | Bagian request | Contoh |
@@ -196,6 +224,8 @@ Diskusikan: apa beda 401 dan 403? Kenapa nomor 6 mengembalikan pesan per field?
 
 ### `async/await` dan `fetch` (±40 menit)
 
+> **Jelaskan:** "Meminta data ke server butuh waktu, seperti menunggu pesanan matang. `await` artinya tunggu sampai jawabannya datang, baru lanjut ke baris berikutnya. Fungsi yang di dalamnya memakai `await` harus ditandai `async`. Kalau server mati, request gagal. Kegagalan itu kita tangkap dengan `try/catch` supaya program tidak berhenti dengan error merah."
+
 Request yang tadi dikirim lewat Postman juga bisa dikirim dari kode. Buat file `api.mjs` (akhiran `.mjs` supaya `await` boleh dipakai langsung di file):
 
 ```js
@@ -249,122 +279,11 @@ try {
 
 ---
 
-## Pertemuan 3: PHP OOP dasar dan Git
+## Pertemuan 3: Git, GitHub, dan cek akhir minggu
 
-### Materi PHP (±45 menit)
+> **Jelaskan:** "Git itu seperti fitur *save point* di game. Setiap `commit` menyimpan kondisi kode saat itu, lengkap dengan pesan apa yang berubah. Kalau nanti ada yang rusak, kita bisa melihat atau kembali ke save point sebelumnya. GitHub adalah tempat menyimpan save point itu secara online. Saat lomba, hasil kerja wajib di-push ke GitHub, jadi alur ini harus lancar tanpa berpikir."
 
-| Konsep | Contoh |
-| --- | --- |
-| Variabel dan array asosiatif | `$p = ['kode' => 'MDL-2026-0001', 'jumlah' => 25000000];` |
-| `foreach` | `foreach ($pengajuan as $p) { ... }` |
-| Fungsi dengan tipe | `function rupiah(int $n): string { ... }` |
-| Class + constructor property promotion | `public function __construct(public string $nama) {}` |
-| Method dan `$this` | `return $this->omzet * 3;` |
-| Static method | `Usaha::dariArray($data)` dipanggil tanpa `new` |
-| Enum (PHP 8.1) | `enum Status: string { case Submitted = 'submitted'; }` |
-| `match` | seperti `switch`, tapi langsung mengembalikan nilai |
-
-Jalankan file PHP dengan `php nama-file.php`.
-
-### Latihan PHP (±60 menit)
-
-Buat file `pengajuan.php`:
-
-1. Buat fungsi `rupiah(int $n): string` dengan `number_format($n, 0, ',', '.')`.
-2. Buat enum `Status` dengan 4 case (`submitted`, `verified`, `disbursed`, `rejected`) dan method `label()` yang memakai `match`:
-
-   | Case | Label |
-   | --- | --- |
-   | `submitted` | Menunggu verifikasi |
-   | `verified` | Menunggu persetujuan |
-   | `disbursed` | Dana cair |
-   | `rejected` | Ditolak |
-
-3. Buat class `Usaha` dengan properti `nama` dan `omzet`, plus method `plafon()` yang mengembalikan `omzet × 3`.
-4. Buat class `Produk` dengan properti `nama`, `min`, dan `max`, plus method `bolehDiajukan(int $jumlah): bool`.
-5. Salin data pengajuan dari pertemuan 1 menjadi array asosiatif PHP. Tampilkan setiap baris dengan format `MDL-2026-0001 - Warung Makan Bu Sari - Rp25.000.000 - Menunggu persetujuan`. Labelnya diambil dari `Status::from($p['status'])->label()`.
-6. Hitung total jumlah pinjaman dengan `array_sum(array_column($pengajuan, 'jumlah'))`.
-7. Uji: usaha dengan omzet Rp12.000.000 mengajukan Rp40.000.000 untuk produk Rp5 juta s.d. Rp50 juta. Apakah lolos batas produk? Apakah lolos plafon?
-
-**Hubungan ke Modalin:**
-- Nomor 2 adalah versi kecil dari `backend/app/Enums/LoanStatus.php`.
-- Nomor 3 dan 7 adalah aturan 3x omzet di `StoreLoanApplicationRequest.php`.
-
-<details>
-<summary>Kunci jawaban PHP</summary>
-
-```php
-<?php
-
-function rupiah(int $n): string
-{
-    return 'Rp' . number_format($n, 0, ',', '.');
-}
-
-enum Status: string
-{
-    case Submitted = 'submitted';
-    case Verified = 'verified';
-    case Disbursed = 'disbursed';
-    case Rejected = 'rejected';
-
-    public function label(): string
-    {
-        return match ($this) {
-            self::Submitted => 'Menunggu verifikasi',
-            self::Verified => 'Menunggu persetujuan',
-            self::Disbursed => 'Dana cair',
-            self::Rejected => 'Ditolak',
-        };
-    }
-}
-
-class Usaha
-{
-    public function __construct(public string $nama, public int $omzet) {}
-
-    public function plafon(): int
-    {
-        return $this->omzet * 3;
-    }
-}
-
-class Produk
-{
-    public function __construct(public string $nama, public int $min, public int $max) {}
-
-    public function bolehDiajukan(int $jumlah): bool
-    {
-        return $jumlah >= $this->min && $jumlah <= $this->max;
-    }
-}
-
-$pengajuan = [
-    ['kode' => 'MDL-2026-0001', 'usaha' => 'Warung Makan Bu Sari', 'jumlah' => 25000000, 'status' => 'verified'],
-    ['kode' => 'MDL-2026-0002', 'usaha' => 'Kopi Lereng Merapi', 'jumlah' => 75000000, 'status' => 'submitted'],
-    ['kode' => 'MDL-2026-0003', 'usaha' => 'Batik Tulis Giriloyo', 'jumlah' => 30000000, 'status' => 'submitted'],
-    ['kode' => 'MDL-2026-0004', 'usaha' => 'Bakpia Ngasem', 'jumlah' => 90000000, 'status' => 'disbursed'],
-    ['kode' => 'MDL-2026-0005', 'usaha' => 'Laundry Kilat Sleman', 'jumlah' => 60000000, 'status' => 'rejected'],
-];
-
-// 5
-foreach ($pengajuan as $p) {
-    echo "{$p['kode']} - {$p['usaha']} - " . rupiah($p['jumlah']) . ' - ' . Status::from($p['status'])->label() . PHP_EOL;
-}
-
-// 6
-echo rupiah(array_sum(array_column($pengajuan, 'jumlah'))) . PHP_EOL; // Rp280.000.000
-
-// 7
-$usaha = new Usaha('Warung Makan Bu Sari', 12000000);
-$produk = new Produk('Modal Kerja Mikro', 5000000, 50000000);
-var_dump($produk->bolehDiajukan(40000000)); // true: masih dalam batas produk
-var_dump(40000000 <= $usaha->plafon());     // false: plafonnya hanya Rp36.000.000
-```
-
-</details>
-
-### Materi dan latihan Git (±45 menit)
+### Langkah Git (±60 menit)
 
 Langkah SSH key ini sama dengan yang diminta di kisi-kisi (bagian F). Kerjakan sekali di laptop murid.
 
@@ -379,12 +298,12 @@ Salin isi public key ke GitHub, di menu **Settings → SSH and GPG keys → New 
 ssh -T git@github.com
 ```
 
-Buat repository kosong `latihan-lks` di GitHub, lalu dari folder `minggu-01`:
+Buat repository kosong `latihan-lks` di GitHub, lalu dari folder `js`:
 
 ```bash
 git init -b main
 git add .
-git commit -m "Latihan minggu 1: JavaScript, PHP, fetch"
+git commit -m "Latihan JavaScript dan fetch"
 git remote add origin git@github.com:USERNAME/latihan-lks.git
 git push -u origin main
 ```
@@ -403,16 +322,15 @@ Latihan: ubah satu file, lalu ulangi `add`, `commit`, dan `push` tanpa melihat c
 
 ---
 
-## Cek akhir minggu (45 menit, tanpa catatan, dokumentasi resmi boleh)
+## Cek akhir minggu (30 menit, tanpa catatan, dokumentasi resmi boleh)
 
 | Bagian | Waktu | Tugas | Lulus jika |
 | --- | --- | --- | --- |
 | JavaScript | 10 menit | Dari data pengajuan baru yang diberikan pengajar: total rupiah, jumlah per status, dan daftar yang statusnya `submitted` | Ketiganya benar |
 | Postman | 10 menit | Login, panggil `/api/me` dengan token, lalu tunjukkan contoh 401, 403, dan 422 | Bisa menjelaskan setiap status code |
-| PHP | 15 menit | Enum status + `label()`, class `Usaha` dengan `plafon()` | Jalan tanpa error, hasil benar |
 | Git | 5 menit | Commit dan push hasil cek ini | Muncul di GitHub |
 
-Kalau belum lulus, ulangi bagian itu di awal minggu 2 sebelum masuk Laravel.
+Kalau belum lulus, ulangi bagian itu di awal minggu berikutnya sebelum masuk Laravel.
 
 ---
 
@@ -425,7 +343,7 @@ Kesalahan yang paling sering muncul minggu ini:
 - **`==` dan `===`.** Biasakan `===` dari awal.
 - **Lupa `await`.** Hasilnya `Promise { <pending> }`, bukan data.
 - **Lupa spasi setelah `Bearer`.** Hasilnya 401 walaupun tokennya benar.
-- **PHP lupa `$` atau `;`**, atau menulis `$this.omzet`. Di PHP pemanggilnya `$this->omzet`.
+- **Kebiasaan PHP terbawa ke JavaScript:** menulis `$` di depan variabel, atau memakai titik untuk menggabung teks.
 - **Push ditolak karena SSH key belum ditambahkan ke GitHub.** Cek dengan `ssh -T git@github.com`.
 
 Catat waktu pengerjaan tugas rumah nomor 1 setiap minggu. Kalau angkanya turun, latihannya berhasil.
