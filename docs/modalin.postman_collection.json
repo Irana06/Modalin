@@ -1,0 +1,87 @@
+{
+  "info": {
+    "name": "Modalin API",
+    "description": "Login dulu: script di request Login menyimpan token ke variabel {{token}}.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }] },
+  "variable": [
+    { "key": "base_url", "value": "http://127.0.0.1:8000/api" },
+    { "key": "token", "value": "" },
+    { "key": "loan_id", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login",
+          "event": [{ "listen": "test", "script": { "exec": ["pm.collectionVariables.set('token', pm.response.json().data.token);"] } }],
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"email\": \"umkm@modalin.test\",\n  \"password\": \"password\"\n}", "options": { "raw": { "language": "json" } } },
+            "url": "{{base_url}}/login"
+          }
+        },
+        {
+          "name": "Register UMKM",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Dewi Anggraini\",\n  \"email\": \"dewi@contoh.test\",\n  \"password\": \"rahasia123\",\n  \"password_confirmation\": \"rahasia123\",\n  \"business_name\": \"Tenun Lurik Dewi\",\n  \"nib\": \"9120399887766\",\n  \"sector\": \"Kerajinan\",\n  \"address\": \"Bantul, DI Yogyakarta\",\n  \"monthly_revenue\": 9000000,\n  \"established_year\": 2018\n}", "options": { "raw": { "language": "json" } } },
+            "url": "{{base_url}}/register"
+          }
+        },
+        { "name": "Me", "request": { "method": "GET", "header": [{ "key": "Accept", "value": "application/json" }], "url": "{{base_url}}/me" } },
+        { "name": "Logout", "request": { "method": "POST", "header": [{ "key": "Accept", "value": "application/json" }], "url": "{{base_url}}/logout" } }
+      ]
+    },
+    {
+      "name": "Pengajuan",
+      "item": [
+        { "name": "Produk aktif (publik)", "request": { "auth": { "type": "noauth" }, "method": "GET", "header": [{ "key": "Accept", "value": "application/json" }], "url": "{{base_url}}/loan-products" } },
+        { "name": "Daftar pengajuan", "request": { "method": "GET", "header": [{ "key": "Accept", "value": "application/json" }], "url": "{{base_url}}/loan-applications?status=&search=&page=1" } },
+        {
+          "name": "Ajukan pembiayaan",
+          "event": [{ "listen": "test", "script": { "exec": ["if (pm.response.code === 201) pm.collectionVariables.set('loan_id', pm.response.json().data.id);"] } }],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"loan_product_id\": \"<id dari Produk aktif>\",\n  \"amount\": 20000000,\n  \"tenor_months\": 12,\n  \"purpose\": \"Membeli benang dan alat tenun tambahan.\"\n}", "options": { "raw": { "language": "json" } } },
+            "url": "{{base_url}}/loan-applications"
+          }
+        },
+        { "name": "Detail pengajuan", "request": { "method": "GET", "header": [{ "key": "Accept", "value": "application/json" }], "url": "{{base_url}}/loan-applications/{{loan_id}}" } },
+        {
+          "name": "Keputusan (verifikator / manajer / admin)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"decision\": \"approved\",\n  \"note\": \"Data usaha sesuai dokumen.\"\n}", "options": { "raw": { "language": "json" } } },
+            "url": "{{base_url}}/loan-applications/{{loan_id}}/decision"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin",
+      "item": [
+        { "name": "Produk", "request": { "method": "GET", "header": [{ "key": "Accept", "value": "application/json" }], "url": "{{base_url}}/admin/loan-products" } },
+        {
+          "name": "Tambah produk",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Modal Musiman\",\n  \"interest_rate\": 11,\n  \"min_amount\": 5000000,\n  \"max_amount\": 30000000,\n  \"min_tenor\": 3,\n  \"max_tenor\": 12,\n  \"is_active\": true\n}", "options": { "raw": { "language": "json" } } },
+            "url": "{{base_url}}/admin/loan-products"
+          }
+        },
+        { "name": "Pengguna", "request": { "method": "GET", "header": [{ "key": "Accept", "value": "application/json" }], "url": "{{base_url}}/admin/users?role=&search=" } },
+        { "name": "Audit log", "request": { "method": "GET", "header": [{ "key": "Accept", "value": "application/json" }], "url": "{{base_url}}/admin/audit-logs?action=loan" } }
+      ]
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 # ERD Modalin
 
 Rancangan database untuk **Modalin**, platform pengajuan pembiayaan UMKM.
-Semua primary key memakai **UUID**. Tabel bertanda `deleted_at` memakai **soft delete**.
+Semua primary key memakai **UUID**. Uang disimpan sebagai igint rupiah utuh supaya hitungan cicilan tidak kena pembulatan desimal. Tabel bertanda `deleted_at` memakai **soft delete**.
 
 ```mermaid
 erDiagram
@@ -30,7 +30,7 @@ erDiagram
         string nib UK "Nomor Induk Berusaha"
         string sector
         text address
-        decimal monthly_revenue "omzet per bulan"
+        bigint monthly_revenue "omzet per bulan, rupiah"
         year established_year
         timestamp deleted_at
         timestamps created_updated
@@ -40,8 +40,8 @@ erDiagram
         uuid id PK
         string name
         decimal interest_rate "bunga % per tahun"
-        decimal min_amount
-        decimal max_amount
+        bigint min_amount
+        bigint max_amount
         int min_tenor "bulan"
         int max_tenor "bulan"
         boolean is_active
@@ -54,10 +54,10 @@ erDiagram
         string code UK "MDL-2026-0001"
         uuid business_id FK
         uuid loan_product_id FK
-        decimal amount
+        bigint amount
         int tenor_months
         decimal interest_rate "salinan saat mengajukan"
-        decimal monthly_revenue "salinan omzet saat mengajukan"
+        bigint monthly_revenue "salinan omzet saat mengajukan"
         text purpose
         enum status "submitted | verified | approved | disbursed | rejected"
         timestamp disbursed_at
@@ -80,10 +80,10 @@ erDiagram
         uuid loan_application_id FK
         int number "cicilan ke-"
         date due_date
-        decimal principal "pokok"
-        decimal interest "bunga"
-        decimal amount "total bayar"
-        decimal remaining_balance "sisa pokok"
+        bigint principal "pokok"
+        bigint interest "bunga"
+        bigint amount "total bayar"
+        bigint remaining_balance "sisa pokok"
         timestamp paid_at "null = belum bayar"
     }
 
@@ -110,6 +110,7 @@ stateDiagram-v2
     verified --> approved : Manajer setuju
     verified --> rejected : Manajer tolak
     approved --> disbursed : Admin mencairkan dana (jadwal cicilan dibuat)
+    approved --> rejected : Admin batalkan
     disbursed --> [*]
     rejected --> [*]
 ```

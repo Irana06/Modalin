@@ -1,0 +1,46 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: 'Zen Kaku Gothic New', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Zen Maru Gothic', ui-sans-serif, system-ui, sans-serif;
+
+  --color-paper: #fbf5ef;
+  --color-paper-deep: #f5e9de;
+  --color-surface: #fffcf9;
+  --color-line: #eddccd;
+  --color-line-strong: #e3cdbd;
+  --color-ink: #35231c;
+  --color-ink-soft: #4a3a33;
+  --color-ink-muted: #76625a;
+  --color-shu: #d53b3a;
+  --color-shu-deep: #b32e2d;
+  --color-shu-soft: #fce4e1;
+  --color-cream: #f7deca;
+  --color-night: #44302a;
+  --color-night-muted: #cdb5a7;
+  --color-daun: #2f6b45;
+  --color-daun-soft: #e2efe5;
+
+  --animate-page-in: page-in 150ms ease-out;
+  @keyframes page-in {
+    from { opacity: 0; transform: translateY(4px); }
+  }
+}
+
+/* Kawung, a Javanese batik motif: four petals pointing at one center. Used on one dark band per page. */
+@utility kawung {
+  background-color: var(--color-ink);
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='72' height='72' viewBox='0 0 72 72'><g fill='%2344302a'><ellipse cx='18' cy='18' rx='8' ry='15' transform='rotate(-45 18 18)'/><ellipse cx='54' cy='18' rx='8' ry='15' transform='rotate(45 54 18)'/><ellipse cx='18' cy='54' rx='8' ry='15' transform='rotate(45 18 54)'/><ellipse cx='54' cy='54' rx='8' ry='15' transform='rotate(-45 54 54)'/></g><g fill='%23533b33'><circle cx='36' cy='36' r='3'/><circle cx='0' cy='0' r='3'/><circle cx='72' cy='0' r='3'/><circle cx='0' cy='72' r='3'/><circle cx='72' cy='72' r='3'/></g></svg>");
+  background-size: 72px 72px;
+}
+
+@layer base {
+  body { @apply bg-paper text-ink font-sans antialiased; }
+  h1, h2, h3 { @apply font-display; }
+  :focus-visible { outline: 2px solid var(--color-shu-deep); outline-offset: 2px; }
+  dialog::backdrop { background: rgb(53 35 28 / 0.45); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
