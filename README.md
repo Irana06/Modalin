@@ -82,6 +82,7 @@ Koleksi Postman: [docs/modalin.postman_collection.json](docs/modalin.postman_col
 
 ## Dokumen
 
+- [Silabus latihan](docs/SILABUS.md): urutan 16 minggu, dimulai dari [minggu 1](docs/silabus/minggu-01.md)
 - [Analisis kisi-kisi](docs/KISI-KISI.md): pemetaan rubrik ke kode dan saran pembagian waktu 8 jam
 - [ERD](docs/ERD.md)
 - [Arah desain](docs/DESIGN.md)
