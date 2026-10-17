@@ -34,9 +34,9 @@ export default function AuditLogs() {
         <DataState loading={loading} error={error} onRetry={reload} empty={data ? rows.length === 0 : undefined}
           emptyTitle="Belum ada log untuk aksi ini">
           <div className="relative overflow-x-auto">
-            <table className="w-full min-w-[760px] text-sm">
+            <table className="w-full min-w-[860px] text-sm">
               <thead className="border-b border-line text-left text-ink-muted">
-                <tr><th className="px-5 py-3 font-normal">Waktu</th><th className="px-5 py-3 font-normal">Pengguna</th><th className="px-5 py-3 font-normal">Aksi</th><th className="px-5 py-3 font-normal">IP</th><th className="px-5 py-3"><span className="sr-only">Detail</span></th></tr>
+                <tr><th className="px-5 py-3 font-normal">Waktu</th><th className="px-5 py-3 font-normal">Pengguna</th><th className="px-5 py-3 font-normal">Aksi</th><th className="px-5 py-3 font-normal">Objek</th><th className="px-5 py-3 font-normal">IP</th><th className="px-5 py-3"><span className="sr-only">Detail</span></th></tr>
               </thead>
               <tbody>
                 {rows.map((log) => (
@@ -48,6 +48,7 @@ export default function AuditLogs() {
                         <p className="text-ink-muted">{log.user ? ROLE_LABEL[log.user.role] : 'Belum masuk'}</p>
                       </td>
                       <td className="px-5 py-3"><p>{ACTION_LABEL[log.action] ?? log.action}</p><code className="text-xs text-ink-muted">{log.action}</code></td>
+                      <td className="px-5 py-3 font-bold tabular-nums">{log.auditable?.code ?? log.auditable?.name ?? log.new_values?.email ?? '-'}</td>
                       <td className="px-5 py-3 text-ink-muted tabular-nums">{log.ip_address}</td>
                       <td className="px-5 py-3 text-right">
                         <Button variant="ghost" className="px-3" aria-expanded={open === log.id} onClick={() => setOpen(open === log.id ? null : log.id)}>
@@ -57,7 +58,7 @@ export default function AuditLogs() {
                     </tr>
                     {open === log.id && (
                       <tr>
-                        <td colSpan={5} className="px-5 pb-4">
+                        <td colSpan={6} className="px-5 pb-4">
                           <div className="grid gap-3 sm:grid-cols-2">
                             <div><p className="text-xs font-bold text-ink-muted">Sebelum</p><pre className="mt-1 overflow-x-auto rounded-lg bg-paper-deep p-3 text-xs">{json(log.old_values)}</pre></div>
                             <div><p className="text-xs font-bold text-ink-muted">Sesudah</p><pre className="mt-1 overflow-x-auto rounded-lg bg-paper-deep p-3 text-xs">{json(log.new_values)}</pre></div>

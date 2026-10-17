@@ -74,6 +74,8 @@ function Schedule({ loan, isAdmin, onPaid }) {
   const real = loan.installments.length > 0
   const rows = real ? loan.installments : loan.schedule_preview
   const visible = showAll ? rows : rows.slice(0, 4)
+  const paidCount = rows.filter((row) => row.paid_at).length
+  const nextUnpaid = rows.find((row) => !row.paid_at)?.number
 
   const pay = async (installment) => {
     setPaying(installment.id)
@@ -89,7 +91,8 @@ function Schedule({ loan, isAdmin, onPaid }) {
   }
 
   return (
-    <Card title={real ? 'Jadwal cicilan' : 'Simulasi jadwal cicilan'} action={<p className="text-sm text-ink-muted tabular-nums">{rupiah(rows[0].amount)} / bulan</p>}>
+    <Card title={real ? 'Jadwal cicilan' : 'Simulasi jadwal cicilan'}
+      action={<p className="text-sm text-ink-muted tabular-nums">{rupiah(rows[0].amount)} / bulan{real && ` · ${paidCount} dari ${rows.length} lunas`}</p>}>
       <div className="relative overflow-x-auto">
         <table className="mt-3 w-full min-w-[560px] text-sm tabular-nums">
           <thead className="border-y border-line text-left text-ink-muted">
@@ -112,7 +115,7 @@ function Schedule({ loan, isAdmin, onPaid }) {
                 {real && (
                   <td className="px-6 py-1.5">
                     {row.paid_at ? <span className="font-bold text-daun">Lunas</span>
-                      : isAdmin ? <Button variant="ghost" className="px-3" loading={paying === row.id} onClick={() => pay(row)}>Tandai lunas</Button>
+                      : isAdmin && row.number === nextUnpaid ? <Button variant="ghost" className="px-3" loading={paying === row.id} onClick={() => pay(row)}>Tandai lunas</Button>
                       : <span className="text-ink-muted">Belum bayar</span>}
                   </td>
                 )}
@@ -148,7 +151,9 @@ export default function ApplicationDetail() {
 
   return (
     <>
-      <Link to={back} className="inline-flex min-h-11 items-center text-sm font-bold text-ink-muted hover:text-ink">Kembali ke daftar</Link>
+      <Link to={back} className="inline-flex min-h-11 items-center text-sm font-bold text-ink-muted hover:text-ink">
+        {user.role === 'umkm' ? 'Kembali ke beranda' : 'Kembali ke daftar pengajuan'}
+      </Link>
       <div className="mt-2 flex flex-wrap items-start justify-between gap-3">
         <div>
           <p className="text-sm font-bold text-shu-deep tabular-nums">{loan.code}</p>
@@ -181,7 +186,7 @@ export default function ApplicationDetail() {
               <b>{loan.amount <= ceiling ? 'Memenuhi plafon.' : 'Melebihi plafon.'}</b> {rupiah(loan.amount)} dari batas {rupiah(ceiling)} (3 x omzet).
             </p>
           </Card>
-          <Schedule loan={loan} isAdmin={user.role === 'admin'} onPaid={reload} />
+          {loan.status !== 'rejected' && <Schedule loan={loan} isAdmin={user.role === 'admin'} onPaid={reload} />}
         </div>
 
         <div className="grid min-w-0 grid-cols-1 content-start gap-6">

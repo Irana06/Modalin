@@ -25,7 +25,7 @@ export function Button({ variant = 'primary', loading = false, className = '', c
   return (
     <button
       disabled={loading || props.disabled}
-      className={`inline-flex min-h-11 items-center justify-center gap-2 rounded-lg px-5 font-bold transition-colors disabled:opacity-60 ${BUTTON[variant]} ${className}`}
+      className={`inline-flex min-h-11 items-center justify-center gap-2 rounded-lg px-5 font-bold disabled:opacity-60 ${BUTTON[variant]} ${className}`}
       {...props}
     >
       {loading && <Spinner />}
@@ -149,14 +149,20 @@ export function Pagination({ page, onPage }) {
 
 export function Modal({ open, title, onClose, children }) {
   const ref = useRef(null)
+
   useEffect(() => {
-    if (open) ref.current?.showModal()
-    else ref.current?.close()
+    const dialog = ref.current
+    if (open && !dialog.open) dialog.showModal()
+    if (!open && dialog.open) dialog.close()
   }, [open])
 
+  // Escape and backdrop clicks go through React state; letting the browser close the dialog itself
+  // would leave `open` true and the modal could not be reopened.
   return (
-    <dialog ref={ref} onClose={onClose} aria-labelledby="modal-title"
-      className="m-auto w-[calc(100%-2rem)] max-w-lg rounded-xl bg-surface p-0 text-ink shadow-[0_24px_64px_-16px_rgb(53_35_28/0.5)]">
+    <dialog ref={ref} aria-labelledby="modal-title"
+      onKeyDown={(e) => { if (e.key === 'Escape') { e.preventDefault(); onClose() } }}
+      onClick={(e) => e.target === ref.current && onClose()}
+      className="m-auto w-[calc(100%-2rem)] max-w-lg rounded-xl bg-surface p-0 text-ink shadow-[0_24px_64px_-16px_rgb(53_35_28/0.5)] open:animate-dialog-in">
       {open && (
         <div className="p-6">
           <h2 id="modal-title" className="text-xl font-bold">{title}</h2>

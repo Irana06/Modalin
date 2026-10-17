@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class AuditLog extends Model
 {
@@ -22,6 +23,12 @@ class AuditLog extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class)->withTrashed();
+    }
+
+    /** Every audited model (loan, product, user) uses SoftDeletes, so deleted ones still resolve. */
+    public function auditable(): MorphTo
+    {
+        return $this->morphTo()->withTrashed();
     }
 
     public static function record(string $action, ?Model $model = null, ?array $old = null, ?array $new = null): self

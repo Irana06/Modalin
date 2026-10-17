@@ -11,10 +11,10 @@ class AuditLogController extends Controller
 {
     public function index(Request $request)
     {
-        $logs = AuditLog::with('user:id,name,role')
+        $logs = AuditLog::with('user:id,name,role', 'auditable')
             ->when($request->action, fn ($q, $action) => $q->where('action', 'like', "{$action}.%"))
             ->latest('created_at')
-            ->paginate($request->integer('per_page', 15));
+            ->paginate(min($request->integer('per_page', 15), 50));
 
         return ApiResponse::success($logs);
     }

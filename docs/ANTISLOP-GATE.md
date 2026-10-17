@@ -52,3 +52,24 @@ Dijalankan di browser terhadap API Laravel + MySQL hasil seeder:
 - Buka "Ajukan" lagi: tampil "Anda masih punya pengajuan yang berjalan"
 - URL tidak dikenal: halaman "Halaman tidak ditemukan"
 - Console browser: tidak ada error
+
+### Pengujian ulang menyeluruh
+
+Semua role diuji ulang dari data seeder. Temuan yang sudah diperbaiki:
+
+| Temuan | Perbaikan |
+| --- | --- |
+| Modal tidak bisa dibuka lagi setelah ditutup dengan Escape | Escape dan klik di luar modal sekarang mengubah state React langsung, tidak bergantung pada event `close` |
+| Simulator: "Total dibayar" memakai jumlah di luar batas produk | Semua angka memakai jumlah yang sudah dibatasi, dan ada keterangan "Di luar batas produk" |
+| Pengajuan ditolak masih menampilkan simulasi cicilan | Kartu jadwal disembunyikan untuk status ditolak |
+| Error saat memuat halaman tampil dua kali (toast + pesan) | Toast hanya untuk aksi yang gagal. Error saat memuat ditampilkan di halaman |
+| UMKM melihat "Kembali ke daftar" padahal kembali ke beranda | Label mengikuti role |
+| Pesan pencairan "diteruskan ke tahap berikutnya" | "Dana dicairkan dan jadwal cicilan sudah dibuat." |
+| Cicilan bisa ditandai lunas tidak berurutan | Ditolak di API, dan tombol hanya muncul di cicilan berikutnya. Ditambah ringkasan "3 dari 12 lunas" |
+| Produk tenor 3 bulan tidak bisa memilih tenor 3 | Pilihan tenor mengikuti rentang produk |
+| Audit log tidak menunjukkan objek yang diubah | Kolom "Objek" (kode pengajuan, nama produk, atau nama akun) |
+| Admin bisa menurunkan peran sendiri | Ditolak dengan pesan 422 |
+| Scrollbar vertikal 1px di baris tab status | `overflow-y-hidden` |
+| Link bergaya tombol tanpa transisi hover, menu HP muncul tiba-tiba, modal tanpa animasi | Transisi warna 150ms untuk semua link dan tombol, fade untuk menu HP, `dialog-in` untuk modal |
+| Sidebar ikut tergulir di halaman panjang | Sidebar sticky di desktop |
+| `per_page` tanpa batas | Maksimal 50 |

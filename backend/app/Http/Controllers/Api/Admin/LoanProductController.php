@@ -16,7 +16,7 @@ class LoanProductController extends Controller
         $products = LoanProduct::query()
             ->when($request->search, fn ($q, $search) => $q->where('name', 'like', "%{$search}%"))
             ->orderBy('min_amount')
-            ->paginate($request->integer('per_page', 10));
+            ->paginate(min($request->integer('per_page', 10), 50));
 
         return ApiResponse::success($products);
     }

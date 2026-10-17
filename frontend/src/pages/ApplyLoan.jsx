@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router'
 import api, { toast } from '../lib/api'
 import { useAuth } from '../lib/auth'
 import { useApi } from '../lib/useApi'
-import { ACTIVE_STATUSES, MAX_REVENUE_MULTIPLIER, percent, rupiah, schedule } from '../lib/format'
+import { ACTIVE_STATUSES, MAX_REVENUE_MULTIPLIER, percent, rupiah, schedule, tenorsFor } from '../lib/format'
 import { Button, Card, Field, MoneyInput, PageHeader, Skeleton, inputClass } from '../components/ui'
 
 export default function ApplyLoan() {
@@ -35,7 +35,7 @@ export default function ApplyLoan() {
 
   const ceiling = user.business.monthly_revenue * MAX_REVENUE_MULTIPLIER
   const product = products.data.find((p) => p.id === form.loan_product_id)
-  const tenors = product ? [6, 12, 18, 24, 36, 48].filter((t) => t >= product.min_tenor && t <= product.max_tenor) : []
+  const tenors = product ? tenorsFor(product) : []
   const preview = product && form.amount && form.tenor_months ? schedule(form.amount, product.interest_rate, Number(form.tenor_months)) : null
   const over = form.amount > ceiling
 

@@ -15,7 +15,8 @@ api.interceptors.request.use((config) => {
 })
 
 // Unwraps { success, message, data } and handles errors in one place.
-// 401 ends the session, 422 and 429 are shown by the form that sent them, everything else becomes a toast.
+// 401 ends the session. Failed GETs are shown in the page (DataState), 422/429 by the form that sent them,
+// and any other failed action becomes a toast.
 api.interceptors.response.use(
   (response) => response.data,
   (error) => {
@@ -25,7 +26,7 @@ api.interceptors.response.use(
     if (status === 401 && localStorage.getItem('token')) {
       localStorage.removeItem('token')
       window.location.assign('/masuk')
-    } else if (![401, 422, 429].includes(status)) {
+    } else if (error.config?.method !== 'get' && ![401, 422, 429].includes(status)) {
       toast(message, 'error')
     }
     return Promise.reject({ status, message, errors: error.response?.data?.errors ?? {} })

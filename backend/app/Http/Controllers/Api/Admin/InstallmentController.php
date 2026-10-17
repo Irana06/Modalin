@@ -14,6 +14,10 @@ class InstallmentController extends Controller
         if ($installment->paid_at) {
             return ApiResponse::error('Cicilan ini sudah tercatat lunas.', 422);
         }
+        $earliestUnpaid = $installment->loanApplication->installments()->whereNull('paid_at')->value('number');
+        if ($installment->number !== $earliestUnpaid) {
+            return ApiResponse::error("Lunasi cicilan ke-{$earliestUnpaid} terlebih dahulu.", 422);
+        }
 
         $installment->update(['paid_at' => now()]);
         AuditLog::record('installment.paid', $installment->loanApplication, null, ['installment' => $installment->number]);

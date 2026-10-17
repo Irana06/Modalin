@@ -19,7 +19,7 @@ class UserController extends Controller
                 ->where('name', 'like', "%{$search}%")
                 ->orWhere('email', 'like', "%{$search}%")))
             ->orderBy('name')
-            ->paginate($request->integer('per_page', 10));
+            ->paginate(min($request->integer('per_page', 10), 50));
 
         return ApiResponse::success($users);
     }
@@ -34,6 +34,10 @@ class UserController extends Controller
 
     public function update(UserRequest $request, User $user)
     {
+        if ($user->is($request->user()) && $request->role !== 'admin') {
+            return ApiResponse::error('Anda tidak bisa mengubah peran akun sendiri.', 422);
+        }
+
         $user->fill(array_filter($request->validated()));
         $changed = array_values(array_intersect(array_keys($user->getDirty()), ['name', 'email', 'role']));
         $old = array_intersect_key($user->getOriginal(), array_flip($changed));

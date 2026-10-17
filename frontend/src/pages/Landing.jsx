@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router'
 import { useAuth, homePath } from '../lib/auth'
 import { useApi } from '../lib/useApi'
-import { percent, rupiah, schedule } from '../lib/format'
+import { percent, rupiah, schedule, tenorsFor } from '../lib/format'
 import { Logo, MoneyInput, StatusBadge, Timeline, inputClass } from '../components/ui'
 
 const SAMPLE_STEPS = [
@@ -34,9 +34,10 @@ function Simulator({ products }) {
   }, [product])
 
   if (!product) return null
-  const tenors = [6, 12, 18, 24, 36, 48].filter((t) => t >= product.min_tenor && t <= product.max_tenor)
+  const tenors = tenorsFor(product)
   const valid = amount >= product.min_amount && amount <= product.max_amount
-  const result = schedule(valid ? amount : product.min_amount, product.interest_rate, tenor)
+  const principal = Math.min(Math.max(amount, product.min_amount), product.max_amount)
+  const result = schedule(principal, product.interest_rate, tenor)
 
   return (
     <div className="mx-auto grid max-w-6xl grid-cols-1 gap-10 px-4 py-16 sm:px-6 lg:grid-cols-[1fr_1.1fr] lg:py-20">
@@ -57,8 +58,8 @@ function Simulator({ products }) {
             <MoneyInput value={amount} onChange={setAmount} invalid={!valid} />
             <input type="range" min={product.min_amount} max={product.max_amount} step={1_000_000} value={amount}
               onChange={(e) => setAmount(Number(e.target.value))} className="accent-shu" aria-label="Geser jumlah pinjaman" />
-            <span className={`text-sm tabular-nums ${valid ? 'text-night-muted' : 'font-bold text-cream'}`}>
-              {rupiah(product.min_amount)} s.d. {rupiah(product.max_amount)}
+            <span className={`text-sm tabular-nums ${valid ? 'text-night-muted' : 'font-bold text-cream'}`} aria-live="polite">
+              {valid ? `${rupiah(product.min_amount)} s.d. ${rupiah(product.max_amount)}` : `Di luar batas produk. Dihitung dengan ${rupiah(principal)}.`}
             </span>
           </label>
           <label className="grid gap-2">
@@ -74,7 +75,7 @@ function Simulator({ products }) {
         <p className="mt-1 font-display text-4xl font-bold tabular-nums sm:text-5xl">{rupiah(result.payment)}</p>
         <dl className="mt-6 grid grid-cols-2 gap-4 border-y border-line py-5 text-sm tabular-nums">
           <div><dt className="text-ink-muted">Total bunga</dt><dd className="mt-1 font-bold">{rupiah(result.totalInterest)}</dd></div>
-          <div><dt className="text-ink-muted">Total dibayar</dt><dd className="mt-1 font-bold">{rupiah(amount + result.totalInterest)}</dd></div>
+          <div><dt className="text-ink-muted">Total dibayar</dt><dd className="mt-1 font-bold">{rupiah(principal + result.totalInterest)}</dd></div>
         </dl>
         <p className="mt-5 text-sm font-bold">3 bulan pertama</p>
         <table className="mt-2 w-full text-sm tabular-nums">

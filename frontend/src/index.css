@@ -25,6 +25,10 @@
   @keyframes page-in {
     from { opacity: 0; transform: translateY(4px); }
   }
+  --animate-dialog-in: dialog-in 160ms ease-out;
+  @keyframes dialog-in {
+    from { opacity: 0; transform: translateY(8px) scale(0.98); }
+  }
 }
 
 /* Kawung, a Javanese batik motif: four petals pointing at one center. Used on one dark band per page. */
@@ -38,6 +42,7 @@
   body { @apply bg-paper text-ink font-sans antialiased; }
   h1, h2, h3 { @apply font-display; }
   :focus-visible { outline: 2px solid var(--color-shu-deep); outline-offset: 2px; }
+  a, button, tr { transition: color 150ms, background-color 150ms, border-color 150ms; }
   dialog::backdrop { background: rgb(53 35 28 / 0.45); }
 }
 

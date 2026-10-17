@@ -22,6 +22,12 @@ export function schedule(amount, annualRate, months) {
   return { payment, rows, totalInterest: rows.reduce((sum, row) => sum + row.interest, 0) }
 }
 
+const TENORS = [3, 6, 9, 12, 18, 24, 36, 48, 60]
+export function tenorsFor(product) {
+  const list = TENORS.filter((t) => t >= product.min_tenor && t <= product.max_tenor)
+  return list.length ? list : [product.min_tenor]
+}
+
 export const MAX_REVENUE_MULTIPLIER = 3
 export const ACTIVE_STATUSES = ['submitted', 'verified', 'approved']
 export const SECTORS = ['Kuliner', 'Kerajinan', 'Fesyen', 'Jasa', 'Perdagangan', 'Pertanian']

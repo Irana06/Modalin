@@ -30,7 +30,7 @@ class LoanApplicationController extends Controller
         $page = $scoped->with('business:id,name,sector', 'product:id,name')
             ->when($request->status, fn ($q, $status) => $q->where('status', $status))
             ->latest()
-            ->paginate($request->integer('per_page', 10));
+            ->paginate(min($request->integer('per_page', 10), 50));
 
         return ApiResponse::success([...$page->toArray(), 'counts' => $counts]);
     }
@@ -67,9 +67,12 @@ class LoanApplicationController extends Controller
         $approve = $request->decision === 'approved';
         $loanApplication->decide($request->user(), $approve, $request->note);
 
-        return ApiResponse::success(
-            $loanApplication->only('id', 'code', 'status'),
-            $approve ? 'Keputusan tersimpan, pengajuan diteruskan ke tahap berikutnya.' : 'Pengajuan ditolak.'
-        );
+        $message = match ($loanApplication->status) {
+            LoanStatus::Disbursed => 'Dana dicairkan dan jadwal cicilan sudah dibuat.',
+            LoanStatus::Rejected => 'Pengajuan ditolak.',
+            default => 'Keputusan tersimpan, pengajuan diteruskan ke tahap berikutnya.',
+        };
+
+        return ApiResponse::success($loanApplication->only('id', 'code', 'status'), $message);
     }
 }

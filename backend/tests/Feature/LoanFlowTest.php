@@ -77,6 +77,29 @@ class LoanFlowTest extends TestCase
         $this->assertDatabaseCount('audit_logs', 4);
     }
 
+    public function test_installments_must_be_paid_in_order(): void
+    {
+        $id = $this->submit($this->borrower(), 25_000_000)->json('data.id');
+        foreach (['verifikator', 'manajer', 'admin'] as $role) {
+            $this->decide($role, $id);
+        }
+        $installments = \App\Models\LoanApplication::find($id)->installments;
+
+        $this->postJson("/api/admin/installments/{$installments[1]->id}/pay")->assertStatus(422);
+        $this->postJson("/api/admin/installments/{$installments[0]->id}/pay")->assertOk();
+        $this->postJson("/api/admin/installments/{$installments[0]->id}/pay")->assertStatus(422);
+    }
+
+    public function test_admin_cannot_demote_themselves(): void
+    {
+        $admin = User::factory()->create(['role' => 'admin']);
+        Sanctum::actingAs($admin);
+
+        $this->putJson("/api/admin/users/{$admin->id}", ['name' => $admin->name, 'email' => $admin->email, 'role' => 'manajer'])
+            ->assertStatus(422);
+        $this->assertSame('admin', $admin->fresh()->role->value);
+    }
+
     public function test_business_cannot_submit_twice_or_see_other_applications(): void
     {
         $borrower = $this->borrower();

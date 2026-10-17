@@ -41,7 +41,7 @@ export default function AppLayout() {
         </button>
       </div>
 
-      <aside id="sidebar" className={`${menuOpen ? 'flex' : 'hidden'} flex-col border-r border-line bg-paper-deep lg:flex`}>
+      <aside id="sidebar" className={`${menuOpen ? 'flex animate-page-in lg:animate-none' : 'hidden'} flex-col border-r border-line bg-paper-deep lg:sticky lg:top-0 lg:flex lg:h-screen`}>
         <div className="hidden px-6 py-5 lg:block"><Logo to="/app" /></div>
         <nav className="grid gap-1 px-3 py-3 lg:py-0" aria-label="Menu aplikasi">
           {MENU.filter((item) => item.roles.includes(user.role)).map((item) => (
