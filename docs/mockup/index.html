@@ -1,0 +1,954 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Modalin · Mockup UI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Zen+Maru+Gothic:wght@500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.1.11"></script>
+<style type="text/tailwindcss">
+@theme {
+  --font-sans: 'Zen Kaku Gothic New', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Zen Maru Gothic', ui-sans-serif, system-ui, sans-serif;
+  --color-paper: #fbf5ef;
+  --color-paper-deep: #f5e9de;
+  --color-surface: #fffcf9;
+  --color-line: #eddccd;
+  --color-line-strong: #e3cdbd;
+  --color-ink: #35231c;
+  --color-ink-soft: #4a3a33;
+  --color-ink-muted: #76625a;
+  --color-shu: #d53b3a;
+  --color-shu-deep: #b32e2d;
+  --color-shu-soft: #fce4e1;
+  --color-cream: #f7deca;
+  --color-night: #44302a;
+  --color-night-muted: #cdb5a7;
+  --color-daun: #2f6b45;
+  --color-daun-soft: #e2efe5;
+}
+
+/* Kawung, motif batik Jawa: empat kelopak mengarah ke satu titik. */
+@utility kawung {
+  background-color: #35231c;
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='72' height='72' viewBox='0 0 72 72'><g fill='%2344302a'><ellipse cx='18' cy='18' rx='8' ry='15' transform='rotate(-45 18 18)'/><ellipse cx='54' cy='18' rx='8' ry='15' transform='rotate(45 54 18)'/><ellipse cx='18' cy='54' rx='8' ry='15' transform='rotate(45 18 54)'/><ellipse cx='54' cy='54' rx='8' ry='15' transform='rotate(-45 54 54)'/></g><g fill='%23533b33'><circle cx='36' cy='36' r='3'/><circle cx='0' cy='0' r='3'/><circle cx='72' cy='0' r='3'/><circle cx='0' cy='72' r='3'/><circle cx='72' cy='72' r='3'/></g></svg>");
+  background-size: 72px 72px;
+}
+
+@layer base {
+  body { @apply bg-paper text-ink font-sans antialiased; }
+  h1, h2, h3 { @apply font-display; }
+  :focus-visible { outline: 2px solid var(--color-shu-deep); outline-offset: 2px; border-radius: 6px; }
+}
+</style>
+<style>
+  [data-screen] { animation: screen-in 150ms ease-out; }
+  @keyframes screen-in { from { opacity: 0; } to { opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+  dialog::backdrop { background: rgb(53 35 28 / 0.45); }
+  .num { font-variant-numeric: tabular-nums; }
+</style>
+</head>
+<body>
+
+<!-- Bar khusus mockup, bukan bagian aplikasi -->
+<div class="bg-ink text-cream text-sm">
+  <div class="mx-auto flex max-w-7xl items-center gap-3 relative overflow-x-auto px-4 py-2">
+    <span class="shrink-0 font-bold">Mockup Modalin</span>
+    <nav class="flex shrink-0 gap-1" id="mock-nav" aria-label="Pilih layar mockup">
+      <a href="#/landing" class="rounded-md px-2.5 py-1 hover:bg-night">Landing</a>
+      <a href="#/login" class="rounded-md px-2.5 py-1 hover:bg-night">Login</a>
+      <a href="#/umkm" class="rounded-md px-2.5 py-1 hover:bg-night">Beranda UMKM</a>
+      <a href="#/ajukan" class="rounded-md px-2.5 py-1 hover:bg-night">Form Pengajuan</a>
+      <a href="#/staff" class="rounded-md px-2.5 py-1 hover:bg-night">Daftar Pengajuan</a>
+      <a href="#/detail" class="rounded-md px-2.5 py-1 hover:bg-night">Detail &amp; Approval</a>
+      <a href="#/audit" class="rounded-md px-2.5 py-1 hover:bg-night">Audit Log</a>
+    </nav>
+  </div>
+</div>
+
+<!-- ============ LANDING ============ -->
+<div data-screen="landing" hidden>
+  <header class="border-b border-line">
+    <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4 sm:px-6">
+      <a href="#/landing" class="font-display text-2xl font-bold">Modal<span class="text-shu">in</span></a>
+      <nav class="hidden items-center gap-7 md:flex" aria-label="Navigasi utama">
+        <button data-scroll="simulasi" class="hover:text-shu-deep">Simulasi</button>
+        <button data-scroll="alur" class="hover:text-shu-deep">Alur</button>
+        <button data-scroll="syarat" class="hover:text-shu-deep">Syarat &amp; Produk</button>
+      </nav>
+      <a href="#/login" class="inline-flex min-h-11 items-center rounded-lg bg-ink px-5 font-bold text-surface hover:bg-ink-soft">Masuk</a>
+    </div>
+  </header>
+
+  <section class="mx-auto grid max-w-6xl grid-cols-1 items-center gap-12 px-4 py-14 sm:px-6 lg:grid-cols-[1.1fr_1fr] lg:py-24">
+    <div>
+      <p class="flex items-center gap-3 text-sm text-ink-muted"><span class="h-px w-8 bg-shu"></span>Pembiayaan modal untuk UMKM</p>
+      <h1 class="mt-5 text-4xl font-bold leading-tight sm:text-5xl">Modal usaha dengan proses yang <span class="text-shu">bisa Anda pantau.</span></h1>
+      <p class="mt-6 max-w-xl text-lg leading-relaxed text-ink-muted">Ajukan pembiayaan dari rumah, lihat setiap tahap pemeriksaan sampai dana cair, dan ketahui jadwal cicilan sejak sebelum mengajukan.</p>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a href="#/login" class="inline-flex min-h-12 items-center rounded-lg bg-shu px-6 font-bold text-surface shadow-[0_8px_20px_-8px_rgb(213_59_58/0.6)] hover:bg-shu-deep">Ajukan Pembiayaan</a>
+        <button data-scroll="simulasi" class="inline-flex min-h-12 items-center rounded-lg border border-ink px-6 font-bold hover:bg-paper-deep">Hitung Cicilan</button>
+      </div>
+    </div>
+    <div class="relative">
+      <div class="rounded-xl border border-line bg-surface p-6 shadow-[0_24px_48px_-24px_rgb(53_35_28/0.35)] sm:p-7">
+        <div class="flex items-start justify-between gap-3">
+          <div>
+            <p class="text-xs font-bold tracking-wide text-ink-muted">CONTOH TAMPILAN</p>
+            <p class="num mt-1 text-sm font-bold text-shu-deep">MDL-2026-0012</p>
+            <p class="mt-2 font-display text-xl font-bold">Modal Kerja Mikro</p>
+            <p class="num text-sm text-ink-muted">Rp25.000.000 · 12 bulan</p>
+          </div>
+          <span data-badge="verified"></span>
+        </div>
+        <div class="mt-5 border-t border-line pt-5" id="hero-timeline"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="simulasi" class="kawung scroll-mt-4 text-cream">
+    <div class="mx-auto grid max-w-6xl grid-cols-1 gap-10 px-4 py-16 sm:px-6 lg:grid-cols-[1fr_1.1fr] lg:py-20">
+      <div>
+        <h2 class="text-3xl font-bold sm:text-4xl">Hitung cicilan sebelum mengajukan.</h2>
+        <p class="mt-4 max-w-md leading-relaxed text-night-muted">Cicilan memakai metode anuitas: jumlah bayar sama setiap bulan, porsi bunga mengecil seiring sisa pokok berkurang. Plafon maksimal 3 kali omzet bulanan usaha Anda.</p>
+        <form class="mt-8 grid gap-5" id="sim-form" onsubmit="return false">
+          <label class="grid gap-2">
+            <span class="text-sm font-bold">Produk</span>
+            <select id="sim-product" class="min-h-12 rounded-lg border border-night bg-surface px-3 text-ink"></select>
+          </label>
+          <label class="grid gap-2">
+            <span class="text-sm font-bold">Jumlah pinjaman</span>
+            <div class="flex min-h-12 items-center rounded-lg bg-surface px-3 text-ink">
+              <span class="text-ink-muted">Rp</span>
+              <input id="sim-amount" inputmode="numeric" class="num w-full bg-transparent px-2 py-3 outline-none" value="25.000.000">
+            </div>
+            <input id="sim-range" type="range" class="accent-[#d53b3a]" aria-label="Geser jumlah pinjaman">
+            <span class="num text-xs text-night-muted" id="sim-limits"></span>
+          </label>
+          <label class="grid gap-2">
+            <span class="text-sm font-bold">Tenor</span>
+            <select id="sim-tenor" class="min-h-12 rounded-lg border border-night bg-surface px-3 text-ink"></select>
+          </label>
+        </form>
+      </div>
+      <div class="self-start rounded-xl bg-surface p-6 text-ink sm:p-8">
+        <p class="text-sm text-ink-muted">Cicilan per bulan</p>
+        <p class="num mt-1 font-display text-4xl font-bold sm:text-5xl" id="sim-monthly"></p>
+        <dl class="num mt-6 grid grid-cols-2 gap-4 border-y border-line py-5 text-sm">
+          <div><dt class="text-ink-muted">Total bunga</dt><dd class="mt-1 font-bold" id="sim-interest"></dd></div>
+          <div><dt class="text-ink-muted">Total dibayar</dt><dd class="mt-1 font-bold" id="sim-total"></dd></div>
+        </dl>
+        <p class="mt-5 text-sm font-bold">3 bulan pertama</p>
+        <div class="mt-2 relative overflow-x-auto">
+          <table class="num w-full text-sm">
+            <thead class="text-left text-ink-muted"><tr><th class="py-2 font-medium">Bulan</th><th class="py-2 text-right font-medium">Pokok</th><th class="py-2 text-right font-medium">Bunga</th><th class="py-2 text-right font-medium">Sisa pokok</th></tr></thead>
+            <tbody id="sim-rows"></tbody>
+          </table>
+        </div>
+        <a href="#/login" class="mt-6 inline-flex min-h-11 items-center rounded-lg bg-shu px-5 font-bold text-surface hover:bg-shu-deep">Ajukan dengan angka ini</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="alur" class="mx-auto grid max-w-6xl scroll-mt-4 gap-10 px-4 py-16 sm:px-6 lg:grid-cols-[1fr_1.4fr] lg:py-24">
+    <div>
+      <h2 class="text-3xl font-bold">Empat tahap, semuanya tercatat.</h2>
+      <p class="mt-4 leading-relaxed text-ink-muted">Setiap keputusan disimpan bersama nama petugas dan catatannya. Anda melihat riwayat yang sama dengan yang dilihat petugas.</p>
+    </div>
+    <ol class="grid gap-0">
+      <li class="grid grid-cols-[auto_1fr] gap-x-5 border-l-2 border-line pb-8 pl-6 relative">
+        <span class="absolute -left-[7px] top-1.5 size-3 rounded-full bg-ink"></span>
+        <div class="col-span-2"><p class="text-xs font-bold text-shu-deep">PELAKU USAHA</p><h3 class="mt-1 text-xl font-bold">Mengajukan pembiayaan</h3><p class="mt-1 text-ink-muted">Isi profil usaha, pilih produk, jumlah, dan tenor. Sistem menolak jumlah di atas 3 kali omzet bulanan.</p></div>
+      </li>
+      <li class="grid border-l-2 border-line pb-8 pl-6 relative">
+        <span class="absolute -left-[7px] top-1.5 size-3 rounded-full bg-ink"></span>
+        <p class="text-xs font-bold text-shu-deep">VERIFIKATOR</p><h3 class="mt-1 text-xl font-bold">Memeriksa data usaha</h3><p class="mt-1 text-ink-muted">NIB, omzet, dan tujuan penggunaan dana dicocokkan. Pengajuan bisa ditolak dengan catatan alasannya.</p>
+      </li>
+      <li class="grid border-l-2 border-line pb-8 pl-6 relative">
+        <span class="absolute -left-[7px] top-1.5 size-3 rounded-full bg-ink"></span>
+        <p class="text-xs font-bold text-shu-deep">MANAJER</p><h3 class="mt-1 text-xl font-bold">Memberi persetujuan</h3><p class="mt-1 text-ink-muted">Manajer hanya melihat pengajuan yang sudah lolos verifikasi.</p>
+      </li>
+      <li class="grid border-l-2 border-transparent pl-6 relative">
+        <span class="absolute -left-[7px] top-1.5 size-3 rounded-full bg-shu"></span>
+        <p class="text-xs font-bold text-shu-deep">ADMIN</p><h3 class="mt-1 text-xl font-bold">Mencairkan dana</h3><p class="mt-1 text-ink-muted">Jadwal cicilan lengkap terbit saat dana dicairkan, lengkap dengan tanggal jatuh tempo.</p>
+      </li>
+    </ol>
+  </section>
+
+  <section id="syarat" class="scroll-mt-4 border-t border-line bg-paper-deep">
+    <div class="mx-auto grid max-w-6xl grid-cols-1 gap-10 px-4 py-16 sm:px-6 lg:grid-cols-[0.8fr_1.2fr]">
+      <div>
+        <h2 class="text-2xl font-bold">Yang perlu disiapkan</h2>
+        <ul class="mt-5 grid gap-3">
+          <li class="flex gap-3"><span class="mt-2 size-1.5 shrink-0 rounded-full bg-shu"></span><span><b>NIB</b> (Nomor Induk Berusaha) dari OSS.</span></li>
+          <li class="flex gap-3"><span class="mt-2 size-1.5 shrink-0 rounded-full bg-shu"></span><span><b>Omzet bulanan</b> rata-rata. Plafon pinjaman dihitung dari angka ini.</span></li>
+          <li class="flex gap-3"><span class="mt-2 size-1.5 shrink-0 rounded-full bg-shu"></span><span><b>Tujuan penggunaan dana</b>, misalnya belanja bahan baku atau membeli alat.</span></li>
+        </ul>
+      </div>
+      <div>
+        <h2 class="text-2xl font-bold">Produk pembiayaan</h2>
+        <div class="mt-5 relative overflow-x-auto rounded-xl border border-line bg-surface">
+          <table class="num w-full min-w-[520px] text-sm">
+            <thead class="border-b border-line text-left text-ink-muted"><tr><th class="px-4 py-3 font-medium">Produk</th><th class="px-4 py-3 font-medium">Bunga / tahun</th><th class="px-4 py-3 font-medium">Jumlah</th><th class="px-4 py-3 font-medium">Tenor</th></tr></thead>
+            <tbody id="product-rows" class="divide-y divide-line"></tbody>
+          </table>
+        </div>
+        <p class="mt-2 text-xs text-ink-muted">Contoh data dari seeder project.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="border-t border-line">
+    <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-6 text-sm text-ink-muted sm:px-6">
+      <span class="font-display text-lg font-bold text-ink">Modal<span class="text-shu">in</span></span>
+      <span>Project latihan LKS Web Technologies 2027</span>
+    </div>
+  </footer>
+</div>
+
+<!-- ============ LOGIN ============ -->
+<div data-screen="login" hidden class="grid min-h-[calc(100vh-40px)] lg:grid-cols-2">
+  <div class="flex items-center justify-center px-4 py-12 sm:px-6">
+    <div class="w-full max-w-sm">
+      <a href="#/landing" class="font-display text-2xl font-bold">Modal<span class="text-shu">in</span></a>
+      <h1 class="mt-8 text-3xl font-bold">Masuk ke akun Anda</h1>
+      <p class="mt-2 text-ink-muted">Satu halaman masuk untuk pelaku usaha dan petugas.</p>
+      <form id="login-form" class="mt-8 grid gap-5" novalidate>
+        <div id="login-alert" hidden class="rounded-lg border border-shu/30 bg-shu-soft px-4 py-3 text-sm text-shu-deep" role="alert"></div>
+        <label class="grid gap-2">
+          <span class="text-sm font-bold">Email</span>
+          <input id="login-email" type="email" autocomplete="username" aria-describedby="login-email-err" class="min-h-12 rounded-lg border border-line-strong bg-surface px-3 aria-[invalid=true]:border-shu-deep">
+          <span id="login-email-err" class="text-sm text-shu-deep"></span>
+        </label>
+        <label class="grid gap-2">
+          <span class="text-sm font-bold">Password</span>
+          <div class="flex rounded-lg border border-line-strong bg-surface has-[[aria-invalid=true]]:border-shu-deep">
+            <input id="login-password" type="password" autocomplete="current-password" aria-describedby="login-password-err" class="min-h-12 w-full rounded-lg bg-transparent px-3 outline-none">
+            <button type="button" id="toggle-password" class="min-w-16 px-3 text-sm font-bold text-ink-muted hover:text-ink" aria-label="Tampilkan password">Lihat</button>
+          </div>
+          <span id="login-password-err" class="text-sm text-shu-deep"></span>
+        </label>
+        <button id="login-submit" class="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg bg-shu font-bold text-surface hover:bg-shu-deep disabled:opacity-70">Masuk</button>
+      </form>
+    </div>
+  </div>
+  <aside class="kawung flex items-center px-4 py-12 text-cream sm:px-10">
+    <div class="w-full max-w-md rounded-xl bg-surface p-6 text-ink">
+      <h2 class="text-lg font-bold">Akun demo dari seeder</h2>
+      <p class="mt-1 text-sm text-ink-muted">Klik salah satu untuk mengisi form. Password semua akun: <code class="rounded bg-paper-deep px-1.5 py-0.5">password</code></p>
+      <ul class="mt-4 grid gap-2" id="demo-accounts"></ul>
+    </div>
+  </aside>
+</div>
+
+<!-- ============ APP SHELL ============ -->
+<div id="app-shell" hidden class="lg:grid lg:min-h-[calc(100vh-40px)] lg:grid-cols-[248px_1fr]">
+  <div class="flex items-center justify-between border-b border-line bg-paper-deep px-4 py-3 lg:hidden">
+    <span class="font-display text-xl font-bold">Modal<span class="text-shu">in</span></span>
+    <button id="menu-toggle" aria-expanded="false" aria-controls="sidebar" class="inline-flex min-h-11 items-center rounded-lg border border-line-strong px-4 text-sm font-bold">Menu</button>
+  </div>
+  <aside id="sidebar" class="hidden border-r border-line bg-paper-deep lg:flex lg:flex-col">
+    <div class="hidden px-6 py-5 lg:block"><span class="font-display text-2xl font-bold">Modal<span class="text-shu">in</span></span></div>
+    <nav class="grid gap-1 px-3 py-3 lg:py-0" id="side-nav" aria-label="Menu aplikasi"></nav>
+    <div class="mt-auto border-t border-line px-6 py-4">
+      <p class="font-bold" id="side-user"></p>
+      <p class="text-sm text-ink-muted" id="side-role"></p>
+      <a href="#/login" class="mt-3 inline-flex min-h-11 items-center text-sm font-bold text-shu-deep hover:underline">Keluar</a>
+    </div>
+  </aside>
+  <main class="min-w-0">
+
+    <!-- Beranda UMKM -->
+    <div data-screen="umkm" hidden class="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:py-10">
+      <p class="text-ink-muted">Warung Makan Bu Sari</p>
+      <h1 class="mt-1 text-3xl font-bold">Halo, Sari</h1>
+      <div class="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-[1.5fr_1fr]">
+        <section class="rounded-xl border border-line bg-surface p-6 sm:p-7" aria-labelledby="active-title">
+          <div class="flex flex-wrap items-start justify-between gap-3">
+            <div>
+              <p class="num text-sm font-bold text-shu-deep">MDL-2026-0012</p>
+              <h2 id="active-title" class="mt-1 text-2xl font-bold">Pengajuan aktif</h2>
+              <p class="num mt-1 text-ink-muted">Modal Kerja Mikro · Rp25.000.000 · 12 bulan</p>
+            </div>
+            <span data-badge="verified"></span>
+          </div>
+          <div class="mt-6 border-t border-line pt-6" id="umkm-timeline"></div>
+        </section>
+        <div class="grid content-start gap-6">
+          <section class="rounded-xl border border-line bg-surface p-6">
+            <h2 class="text-lg font-bold">Estimasi cicilan</h2>
+            <p class="num mt-2 font-display text-3xl font-bold" data-monthly="25000000,12,12"></p>
+            <p class="text-sm text-ink-muted">per bulan, selama 12 bulan</p>
+            <p class="mt-4 text-sm text-ink-muted">Jadwal lengkap terbit setelah dana dicairkan.</p>
+          </section>
+          <section class="rounded-xl border border-line bg-surface p-6">
+            <h2 class="text-lg font-bold">Profil usaha</h2>
+            <dl class="num mt-3 grid gap-3 text-sm">
+              <div class="flex justify-between gap-4"><dt class="text-ink-muted">Omzet bulanan</dt><dd class="font-bold">Rp12.000.000</dd></div>
+              <div class="flex justify-between gap-4"><dt class="text-ink-muted">Plafon maksimal</dt><dd class="font-bold">Rp36.000.000</dd></div>
+              <div class="flex justify-between gap-4"><dt class="text-ink-muted">NIB</dt><dd class="font-bold">9120301726554</dd></div>
+            </dl>
+          </section>
+        </div>
+      </div>
+      <section class="mt-6 rounded-xl border border-line bg-surface" aria-labelledby="history-title">
+        <h2 id="history-title" class="px-6 pt-5 text-lg font-bold">Riwayat pengajuan</h2>
+        <div class="relative overflow-x-auto">
+          <table class="num mt-3 w-full min-w-[560px] text-sm">
+            <thead class="border-y border-line text-left text-ink-muted"><tr><th class="px-6 py-3 font-medium">Kode</th><th class="px-6 py-3 font-medium">Jumlah</th><th class="px-6 py-3 font-medium">Diajukan</th><th class="px-6 py-3 font-medium">Status</th></tr></thead>
+            <tbody class="divide-y divide-line">
+              <tr><td class="px-6 py-3 font-bold">MDL-2026-0012</td><td class="px-6 py-3">Rp25.000.000</td><td class="px-6 py-3">3 Okt 2026</td><td class="px-6 py-3"><span data-badge="verified"></span></td></tr>
+              <tr><td class="px-6 py-3 font-bold">MDL-2026-0004</td><td class="px-6 py-3">Rp40.000.000</td><td class="px-6 py-3">12 Agu 2026</td><td class="px-6 py-3"><span data-badge="rejected"></span><p class="mt-1 text-xs text-ink-muted">Melebihi plafon setelah omzet diperbarui</p></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <!-- Form pengajuan -->
+    <div data-screen="ajukan" hidden class="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:py-10">
+      <div class="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <h1 class="text-3xl font-bold">Ajukan pembiayaan</h1>
+          <p class="mt-1 text-ink-muted">Pengajuan akan diperiksa verifikator dalam 1 sampai 3 hari kerja.</p>
+        </div>
+        <div class="flex items-center gap-2 rounded-lg border border-dashed border-line-strong p-1 text-sm" role="group" aria-label="State mockup">
+          <span class="px-2 text-ink-muted">State:</span>
+          <button class="rounded-md px-3 py-1.5 hover:bg-paper-deep aria-pressed:bg-ink aria-pressed:text-surface" data-ajukan-state="form" aria-pressed="true">Form</button>
+          <button class="rounded-md px-3 py-1.5 hover:bg-paper-deep aria-pressed:bg-ink aria-pressed:text-surface" data-ajukan-state="blocked" aria-pressed="false">Ada pengajuan aktif</button>
+        </div>
+      </div>
+
+      <div id="ajukan-blocked" hidden class="mt-8 max-w-2xl rounded-xl border border-line bg-surface p-7">
+        <h2 class="text-xl font-bold">Anda masih punya pengajuan yang berjalan</h2>
+        <p class="mt-2 text-ink-muted">Pengajuan <b class="num text-ink">MDL-2026-0012</b> sedang menunggu persetujuan manajer. Pengajuan baru bisa dibuat setelah pengajuan itu cair atau ditolak.</p>
+        <a href="#/umkm" class="mt-5 inline-flex min-h-11 items-center rounded-lg bg-ink px-5 font-bold text-surface hover:bg-ink-soft">Lihat status pengajuan</a>
+      </div>
+
+      <form id="ajukan-form" class="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-[1.4fr_1fr]" novalidate>
+        <div class="grid content-start gap-6 rounded-xl border border-line bg-surface p-6 sm:p-7">
+          <fieldset>
+            <legend class="text-sm font-bold">Produk pembiayaan</legend>
+            <div class="mt-3 grid gap-2" id="product-options"></div>
+            <span class="mt-2 block text-sm text-shu-deep" id="err-product"></span>
+          </fieldset>
+          <label class="grid gap-2">
+            <span class="text-sm font-bold">Jumlah pinjaman</span>
+            <div class="flex min-h-12 items-center rounded-lg border border-line-strong bg-surface px-3 has-[[aria-invalid=true]]:border-shu-deep">
+              <span class="text-ink-muted">Rp</span>
+              <input id="f-amount" inputmode="numeric" aria-describedby="err-amount hint-amount" class="num w-full bg-transparent px-2 py-3 outline-none" placeholder="0">
+            </div>
+            <span class="num text-sm text-ink-muted" id="hint-amount">Pilih produk dulu untuk melihat batas jumlah.</span>
+            <span class="text-sm text-shu-deep" id="err-amount"></span>
+          </label>
+          <label class="grid gap-2">
+            <span class="text-sm font-bold">Tenor</span>
+            <select id="f-tenor" aria-describedby="err-tenor" class="min-h-12 rounded-lg border border-line-strong bg-surface px-3 aria-[invalid=true]:border-shu-deep"><option value="">Pilih produk dulu</option></select>
+            <span class="text-sm text-shu-deep" id="err-tenor"></span>
+          </label>
+          <label class="grid gap-2">
+            <span class="text-sm font-bold">Tujuan penggunaan dana</span>
+            <textarea id="f-purpose" rows="4" aria-describedby="err-purpose" class="rounded-lg border border-line-strong bg-surface px-3 py-3 aria-[invalid=true]:border-shu-deep" placeholder="Contoh: menambah stok bahan baku dan membeli kompor kedua untuk pesanan katering."></textarea>
+            <span class="flex justify-between text-sm"><span class="text-shu-deep" id="err-purpose"></span><span class="num text-ink-muted" id="purpose-count">0 / min. 20</span></span>
+          </label>
+        </div>
+
+        <aside class="grid content-start gap-5 self-start rounded-xl border border-line bg-surface p-6 lg:sticky lg:top-6">
+          <div>
+            <h2 class="text-lg font-bold">Plafon Anda</h2>
+            <p class="num mt-1 text-sm text-ink-muted">Omzet Rp12.000.000 × 3 = <b class="text-ink">Rp36.000.000</b></p>
+            <div class="mt-3 h-2.5 overflow-hidden rounded-full bg-paper-deep" role="progressbar" aria-label="Pemakaian plafon" aria-valuemin="0" aria-valuemax="100" id="plafon-bar-wrap">
+              <div id="plafon-bar" class="h-full w-0 rounded-full bg-ink transition-all"></div>
+            </div>
+            <p class="num mt-2 text-sm" id="plafon-text">Belum ada jumlah.</p>
+          </div>
+          <div class="border-t border-line pt-5">
+            <p class="text-sm text-ink-muted">Estimasi cicilan per bulan</p>
+            <p class="num mt-1 font-display text-3xl font-bold" id="f-monthly">Rp0</p>
+            <p class="num text-sm text-ink-muted" id="f-monthly-note">Isi produk, jumlah, dan tenor.</p>
+          </div>
+          <button id="ajukan-submit" class="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg bg-shu font-bold text-surface hover:bg-shu-deep disabled:opacity-70">Kirim pengajuan</button>
+        </aside>
+      </form>
+    </div>
+
+    <!-- Daftar pengajuan (staf) -->
+    <div data-screen="staff" hidden class="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:py-10">
+      <div class="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <h1 class="text-3xl font-bold">Pengajuan masuk</h1>
+          <p class="mt-1 text-ink-muted">Anda bisa memutuskan pengajuan berstatus <b class="text-ink">Menunggu persetujuan</b>.</p>
+        </div>
+        <div class="flex flex-wrap items-center gap-1 rounded-lg border border-dashed border-line-strong p-1 text-sm" role="group" aria-label="State mockup">
+          <span class="px-2 text-ink-muted">State:</span>
+          <button class="rounded-md px-3 py-1.5 hover:bg-paper-deep aria-pressed:bg-ink aria-pressed:text-surface" data-list-state="data" aria-pressed="true">Data</button>
+          <button class="rounded-md px-3 py-1.5 hover:bg-paper-deep aria-pressed:bg-ink aria-pressed:text-surface" data-list-state="loading" aria-pressed="false">Memuat</button>
+          <button class="rounded-md px-3 py-1.5 hover:bg-paper-deep aria-pressed:bg-ink aria-pressed:text-surface" data-list-state="error" aria-pressed="false">Error</button>
+        </div>
+      </div>
+
+      <div class="mt-6 flex gap-1 relative overflow-x-auto border-b border-line" role="tablist" id="status-tabs" aria-label="Filter status"></div>
+
+      <div class="mt-4 flex flex-wrap gap-3">
+        <label class="flex min-h-11 flex-1 items-center gap-2 rounded-lg border border-line-strong bg-surface px-3 sm:max-w-sm">
+          <svg class="size-4 shrink-0 text-ink-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input id="list-search" class="w-full bg-transparent py-2 outline-none" placeholder="Cari kode atau nama usaha" aria-label="Cari kode atau nama usaha">
+        </label>
+        <select id="list-product" class="min-h-11 rounded-lg border border-line-strong bg-surface px-3" aria-label="Filter produk"><option value="">Semua produk</option></select>
+      </div>
+
+      <div class="mt-4 rounded-xl border border-line bg-surface" id="list-container"></div>
+    </div>
+
+    <!-- Detail & approval -->
+    <div data-screen="detail" hidden class="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:py-10">
+      <a href="#/staff" class="inline-flex min-h-11 items-center text-sm font-bold text-ink-muted hover:text-ink">← Kembali ke daftar</a>
+      <div class="mt-2 flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <p class="num text-sm font-bold text-shu-deep">MDL-2026-0012</p>
+          <h1 class="mt-1 text-3xl font-bold">Warung Makan Bu Sari</h1>
+          <p class="mt-1 text-ink-muted">Diajukan Sari Wulandari, 3 Okt 2026</p>
+        </div>
+        <span id="detail-badge"></span>
+      </div>
+
+      <div class="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-[1.5fr_1fr]">
+        <div class="grid min-w-0 grid-cols-1 content-start gap-6">
+          <section class="rounded-xl border border-line bg-surface p-6">
+            <h2 class="text-lg font-bold">Data pengajuan</h2>
+            <dl class="num mt-4 grid gap-x-6 gap-y-4 text-sm sm:grid-cols-2">
+              <div><dt class="text-ink-muted">Produk</dt><dd class="mt-0.5 font-bold">Modal Kerja Mikro</dd></div>
+              <div><dt class="text-ink-muted">Bunga</dt><dd class="mt-0.5 font-bold">12% per tahun</dd></div>
+              <div><dt class="text-ink-muted">Jumlah</dt><dd class="mt-0.5 font-bold">Rp25.000.000</dd></div>
+              <div><dt class="text-ink-muted">Tenor</dt><dd class="mt-0.5 font-bold">12 bulan</dd></div>
+              <div class="sm:col-span-2"><dt class="text-ink-muted">Tujuan</dt><dd class="mt-0.5">Menambah stok bahan baku dan membeli kompor kedua untuk pesanan katering kantor.</dd></div>
+            </dl>
+          </section>
+          <section class="rounded-xl border border-line bg-surface p-6">
+            <h2 class="text-lg font-bold">Data usaha</h2>
+            <dl class="num mt-4 grid gap-x-6 gap-y-4 text-sm sm:grid-cols-2">
+              <div><dt class="text-ink-muted">NIB</dt><dd class="mt-0.5 font-bold">9120301726554</dd></div>
+              <div><dt class="text-ink-muted">Sektor</dt><dd class="mt-0.5 font-bold">Kuliner</dd></div>
+              <div><dt class="text-ink-muted">Omzet bulanan</dt><dd class="mt-0.5 font-bold">Rp12.000.000</dd></div>
+              <div><dt class="text-ink-muted">Berdiri</dt><dd class="mt-0.5 font-bold">2019</dd></div>
+              <div class="sm:col-span-2"><dt class="text-ink-muted">Alamat</dt><dd class="mt-0.5">Jl. Kaliurang Km 7, Sleman, DI Yogyakarta</dd></div>
+            </dl>
+            <p class="mt-5 rounded-lg bg-daun-soft px-4 py-3 text-sm text-daun"><b>Memenuhi plafon.</b> Rp25.000.000 dari batas Rp36.000.000 (3 × omzet).</p>
+          </section>
+          <section class="rounded-xl border border-line bg-surface">
+            <div class="flex flex-wrap items-center justify-between gap-2 px-6 pt-5">
+              <h2 class="text-lg font-bold">Simulasi jadwal cicilan</h2>
+              <p class="num text-sm text-ink-muted" data-monthly-label="25000000,12,12"></p>
+            </div>
+            <div class="relative overflow-x-auto">
+              <table class="num mt-3 w-full min-w-[520px] text-sm">
+                <thead class="border-y border-line text-left text-ink-muted"><tr><th class="px-6 py-3 font-medium">Ke-</th><th class="px-6 py-3 font-medium">Jatuh tempo</th><th class="px-6 py-3 text-right font-medium">Pokok</th><th class="px-6 py-3 text-right font-medium">Bunga</th><th class="px-6 py-3 text-right font-medium">Sisa pokok</th></tr></thead>
+                <tbody id="schedule-rows" class="divide-y divide-line"></tbody>
+              </table>
+            </div>
+            <div class="px-6 py-4"><button id="schedule-toggle" class="inline-flex min-h-11 items-center text-sm font-bold text-shu-deep hover:underline" aria-expanded="false">Tampilkan semua 12 bulan</button></div>
+          </section>
+        </div>
+
+        <div class="grid content-start gap-6">
+          <section class="rounded-xl border-2 border-ink bg-surface p-6" id="decision-panel" aria-labelledby="decision-title"></section>
+          <section class="rounded-xl border border-line bg-surface p-6">
+            <h2 class="text-lg font-bold">Riwayat</h2>
+            <div class="mt-5" id="detail-timeline"></div>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <!-- Audit log -->
+    <div data-screen="audit" hidden class="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:py-10">
+      <h1 class="text-3xl font-bold">Audit log</h1>
+      <p class="mt-1 text-ink-muted">Semua perubahan data penting, terbaru di atas. Log tidak bisa diubah atau dihapus.</p>
+      <div class="mt-6 flex flex-wrap gap-3">
+        <select id="audit-filter" class="min-h-11 rounded-lg border border-line-strong bg-surface px-3" aria-label="Filter aksi">
+          <option value="">Semua aksi</option>
+          <option value="loan">Pengajuan</option>
+          <option value="product">Produk</option>
+          <option value="auth">Login</option>
+        </select>
+      </div>
+      <div class="mt-4 relative overflow-x-auto rounded-xl border border-line bg-surface">
+        <table class="num w-full min-w-[720px] text-sm">
+          <thead class="border-b border-line text-left text-ink-muted"><tr><th class="px-5 py-3 font-medium">Waktu</th><th class="px-5 py-3 font-medium">Pengguna</th><th class="px-5 py-3 font-medium">Aksi</th><th class="px-5 py-3 font-medium">Objek</th><th class="px-5 py-3 font-medium">IP</th><th class="px-5 py-3"><span class="sr-only">Detail</span></th></tr></thead>
+          <tbody id="audit-rows"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- Modal konfirmasi -->
+<dialog id="confirm-dialog" class="m-auto w-[calc(100%-2rem)] max-w-md rounded-xl bg-surface p-0 text-ink shadow-[0_24px_64px_-16px_rgb(53_35_28/0.5)]" aria-labelledby="confirm-title">
+  <form method="dialog" class="p-6">
+    <h2 id="confirm-title" class="text-xl font-bold"></h2>
+    <p id="confirm-text" class="mt-2 text-ink-muted"></p>
+    <div class="mt-6 flex justify-end gap-3">
+      <button value="cancel" class="inline-flex min-h-11 items-center rounded-lg border border-line-strong px-4 font-bold hover:bg-paper-deep">Batal</button>
+      <button value="ok" id="confirm-ok" class="inline-flex min-h-11 items-center rounded-lg px-4 font-bold text-surface"></button>
+    </div>
+  </form>
+</dialog>
+
+<!-- Toast -->
+<div id="toast" role="status" aria-live="polite" class="pointer-events-none fixed inset-x-4 bottom-4 z-50 flex justify-center sm:inset-x-auto sm:right-6 sm:bottom-6"></div>
+
+<script>
+const rupiah = (n) => 'Rp' + Math.round(n).toLocaleString('id-ID');
+const fmtDate = (d) => d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+const $ = (s, el = document) => el.querySelector(s);
+const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+
+// Anuitas: cicilan tetap, sisa pembulatan masuk ke bulan terakhir (sama dengan docs/ERD.md).
+function schedule(P, ratePct, n, start = new Date(2026, 10, 5)) {
+  const r = ratePct / 12 / 100;
+  const M = Math.round(P * r / (1 - Math.pow(1 + r, -n)));
+  let bal = P;
+  const rows = [];
+  for (let i = 1; i <= n; i++) {
+    const interest = Math.round(bal * r);
+    const principal = i === n ? bal : M - interest;
+    bal -= principal;
+    rows.push({ i, due: new Date(start.getFullYear(), start.getMonth() + i - 1, start.getDate()), principal, interest, amount: principal + interest, bal });
+  }
+  return { M, rows, totalInterest: rows.reduce((s, r) => s + r.interest, 0) };
+}
+
+const PRODUCTS = [
+  { id: 'mikro', name: 'Modal Kerja Mikro', rate: 12, min: 5e6, max: 50e6, tmin: 6, tmax: 24 },
+  { id: 'kecil', name: 'Modal Kerja Kecil', rate: 10.5, min: 50e6, max: 200e6, tmin: 12, tmax: 36 },
+  { id: 'alat', name: 'Investasi Alat Usaha', rate: 9, min: 20e6, max: 150e6, tmin: 12, tmax: 48 },
+];
+const tenors = (p) => [6, 12, 18, 24, 36, 48].filter((t) => t >= p.tmin && t <= p.tmax);
+
+const STATUS = {
+  submitted: ['Menunggu verifikasi', 'bg-shu-soft text-shu-deep'],
+  verified: ['Menunggu persetujuan', 'bg-shu-soft text-shu-deep'],
+  approved: ['Siap dicairkan', 'bg-cream text-ink'],
+  disbursed: ['Dana cair', 'bg-daun-soft text-daun'],
+  rejected: ['Ditolak', 'bg-paper-deep text-ink-muted'],
+};
+const badge = (s) => `<span class="inline-flex shrink-0 items-center gap-1.5 rounded-md px-2 py-1 text-xs font-bold ${STATUS[s][1]}"><span class="size-1.5 rounded-full bg-current"></span>${STATUS[s][0]}</span>`;
+const renderBadges = () => $$('[data-badge]').forEach((el) => (el.outerHTML = badge(el.dataset.badge)));
+
+const ICON = {
+  done: '<span class="grid size-6 place-items-center rounded-full bg-ink text-surface"><svg class="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="m5 12 5 5 9-10"/></svg></span>',
+  current: '<span class="grid size-6 place-items-center rounded-full border-2 border-shu"><span class="size-2.5 rounded-full bg-shu"></span></span>',
+  todo: '<span class="block size-6 rounded-full border-2 border-line-strong"></span>',
+  rejected: '<span class="grid size-6 place-items-center rounded-full bg-ink-muted text-surface"><svg class="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></span>',
+};
+const STATE_TEXT = { done: 'Selesai', current: 'Sedang diproses', todo: 'Belum', rejected: 'Ditolak' };
+
+function timeline(steps) {
+  return `<ol class="grid gap-4">${steps.map((s) => `
+    <li class="grid grid-cols-[1.5rem_1fr] gap-x-4">
+      ${ICON[s.state]}
+      <div class="min-w-0">
+        <div class="flex flex-wrap items-baseline justify-between gap-x-3">
+          <p class="font-bold ${s.state === 'current' ? 'text-shu-deep' : s.state === 'todo' ? 'text-ink-muted font-medium' : ''}">${s.title}<span class="sr-only">, ${STATE_TEXT[s.state]}</span></p>
+          <p class="num text-sm text-ink-muted">${s.date || (s.state === 'current' ? 'Sedang diproses' : '')}</p>
+        </div>
+        ${s.by ? `<p class="text-sm text-ink-muted">${s.by}</p>` : ''}
+        ${s.note ? `<p class="mt-2 rounded-lg bg-paper-deep px-3 py-2 text-sm">${s.note}</p>` : ''}
+      </div>
+    </li>`).join('')}</ol>`;
+}
+
+let loanStatus = 'verified';
+function loanSteps(status = loanStatus) {
+  const steps = [
+    { title: 'Diajukan', date: '3 Okt 2026', by: 'Sari Wulandari', state: 'done' },
+    { title: 'Verifikasi data usaha', date: '6 Okt 2026', by: 'Rina Kusuma, Verifikator', note: 'NIB dan omzet sesuai dokumen. Usaha berjalan sejak 2019.', state: 'done' },
+    { title: 'Persetujuan manajer', state: 'current' },
+    { title: 'Pencairan dana', state: 'todo' },
+  ];
+  if (status === 'approved') Object.assign(steps[2], { state: 'done', date: '17 Okt 2026', by: 'Dimas Prakoso, Manajer', note: decisionNote || null }), (steps[3].state = 'current');
+  if (status === 'rejected') Object.assign(steps[2], { state: 'rejected', title: 'Ditolak manajer', date: '17 Okt 2026', by: 'Dimas Prakoso, Manajer', note: decisionNote }), steps.pop();
+  return steps;
+}
+
+/* ---------- Router ---------- */
+const ROLE_OF = { umkm: 'umkm', ajukan: 'umkm', staff: 'manajer', detail: 'manajer', audit: 'admin' };
+const MENUS = {
+  umkm: [['umkm', 'Beranda'], ['ajukan', 'Ajukan Pembiayaan']],
+  manajer: [['staff', 'Pengajuan']],
+  admin: [['audit', 'Audit Log']],
+};
+const USERS = { umkm: ['Sari Wulandari', 'Pelaku usaha'], manajer: ['Dimas Prakoso', 'Manajer'], admin: ['Admin Modalin', 'Admin'] };
+
+function route() {
+  const screen = location.hash.replace('#/', '') || 'landing';
+  const valid = $$('[data-screen]').some((el) => el.dataset.screen === screen) ? screen : 'landing';
+  $$('[data-screen]').forEach((el) => (el.hidden = el.dataset.screen !== valid));
+  const role = ROLE_OF[valid];
+  $('#app-shell').hidden = !role;
+  if (role) {
+    const active = valid === 'detail' ? 'staff' : valid;
+    $('#side-nav').innerHTML = MENUS[role].map(([id, label]) =>
+      `<a href="#/${id}" class="flex min-h-11 items-center rounded-lg px-3 font-medium ${id === active ? 'bg-surface font-bold text-ink shadow-[inset_3px_0_0_var(--color-shu)]' : 'text-ink-muted hover:bg-line hover:text-ink'}" ${id === active ? 'aria-current="page"' : ''}>${label}</a>`).join('');
+    [$('#side-user').textContent, $('#side-role').textContent] = USERS[role];
+    setMenu(false);
+  }
+  $$('#mock-nav a').forEach((a) => a.classList.toggle('bg-night', a.getAttribute('href') === '#/' + valid));
+  window.scrollTo(0, 0);
+}
+window.addEventListener('hashchange', route);
+
+function setMenu(open) {
+  $('#menu-toggle').setAttribute('aria-expanded', open);
+  $('#sidebar').classList.toggle('hidden', !open);
+  $('#sidebar').classList.toggle('flex', open);
+  $('#sidebar').classList.toggle('flex-col', open);
+}
+$('#menu-toggle').addEventListener('click', () => setMenu($('#menu-toggle').getAttribute('aria-expanded') !== 'true'));
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && $('#menu-toggle').getAttribute('aria-expanded') === 'true') setMenu(false); });
+
+$$('[data-scroll]').forEach((b) => b.addEventListener('click', () => document.getElementById(b.dataset.scroll).scrollIntoView({ behavior: 'smooth' })));
+
+/* ---------- Toast & dialog ---------- */
+let toastTimer;
+function toast(msg) {
+  $('#toast').innerHTML = `<p class="pointer-events-auto rounded-lg bg-ink px-5 py-3 font-medium text-surface shadow-lg">${msg}</p>`;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => ($('#toast').innerHTML = ''), 3500);
+}
+function confirmDialog({ title, text, ok, danger }) {
+  const d = $('#confirm-dialog');
+  $('#confirm-title').textContent = title;
+  $('#confirm-text').textContent = text;
+  $('#confirm-ok').textContent = ok;
+  $('#confirm-ok').className = `inline-flex min-h-11 items-center rounded-lg px-4 font-bold text-surface ${danger ? 'bg-ink hover:bg-ink-soft' : 'bg-shu hover:bg-shu-deep'}`;
+  d.returnValue = '';
+  d.showModal();
+  return new Promise((res) => d.addEventListener('close', () => res(d.returnValue === 'ok'), { once: true }));
+}
+const spinner = '<span class="size-4 animate-spin rounded-full border-2 border-current border-r-transparent" aria-hidden="true"></span>';
+function busy(btn, label) { btn.disabled = true; btn.dataset.label = btn.textContent; btn.innerHTML = spinner + label; }
+function idle(btn) { btn.disabled = false; btn.textContent = btn.dataset.label; }
+
+/* ---------- Landing ---------- */
+$('#hero-timeline').innerHTML = timeline(loanSteps('verified'));
+$('#product-rows').innerHTML = PRODUCTS.map((p) => `<tr><td class="px-4 py-3 font-bold">${p.name}</td><td class="px-4 py-3">${String(p.rate).replace('.', ',')}%</td><td class="px-4 py-3">${rupiah(p.min)} s.d. ${rupiah(p.max)}</td><td class="px-4 py-3">${p.tmin} s.d. ${p.tmax} bulan</td></tr>`).join('');
+
+const sim = { product: $('#sim-product'), amount: $('#sim-amount'), range: $('#sim-range'), tenor: $('#sim-tenor') };
+sim.product.innerHTML = PRODUCTS.map((p) => `<option value="${p.id}">${p.name} (${String(p.rate).replace('.', ',')}% / tahun)</option>`).join('');
+const digits = (s) => Number(String(s).replace(/\D/g, '')) || 0;
+function simProduct() {
+  const p = PRODUCTS.find((x) => x.id === sim.product.value);
+  Object.assign(sim.range, { min: p.min, max: p.max, step: 1e6 });
+  sim.tenor.innerHTML = tenors(p).map((t) => `<option value="${t}" ${t === 12 ? 'selected' : ''}>${t} bulan</option>`).join('');
+  $('#sim-limits').textContent = `${rupiah(p.min)} s.d. ${rupiah(p.max)}`;
+  const v = Math.min(Math.max(digits(sim.amount.value), p.min), p.max);
+  sim.amount.value = v.toLocaleString('id-ID');
+  sim.range.value = v;
+  simCalc();
+}
+function simCalc() {
+  const p = PRODUCTS.find((x) => x.id === sim.product.value);
+  const P = Math.min(Math.max(digits(sim.amount.value), p.min), p.max);
+  const s = schedule(P, p.rate, Number(sim.tenor.value));
+  $('#sim-monthly').textContent = rupiah(s.M);
+  $('#sim-interest').textContent = rupiah(s.totalInterest);
+  $('#sim-total').textContent = rupiah(P + s.totalInterest);
+  $('#sim-rows').innerHTML = s.rows.slice(0, 3).map((r) => `<tr class="border-t border-line"><td class="py-2">${r.i}</td><td class="py-2 text-right">${rupiah(r.principal)}</td><td class="py-2 text-right">${rupiah(r.interest)}</td><td class="py-2 text-right">${rupiah(r.bal)}</td></tr>`).join('');
+}
+sim.product.addEventListener('change', simProduct);
+sim.tenor.addEventListener('change', simCalc);
+sim.range.addEventListener('input', () => { sim.amount.value = Number(sim.range.value).toLocaleString('id-ID'); simCalc(); });
+sim.amount.addEventListener('input', () => { const v = digits(sim.amount.value); sim.amount.value = v ? v.toLocaleString('id-ID') : ''; sim.range.value = v; simCalc(); });
+sim.amount.addEventListener('blur', simProduct);
+simProduct();
+
+/* ---------- Login ---------- */
+const ACCOUNTS = [
+  ['umkm@modalin.test', 'Pelaku usaha', 'umkm'],
+  ['verifikator@modalin.test', 'Verifikator', 'staff'],
+  ['manajer@modalin.test', 'Manajer', 'staff'],
+  ['admin@modalin.test', 'Admin', 'audit'],
+];
+$('#demo-accounts').innerHTML = ACCOUNTS.map(([email, role]) => `<li><button type="button" data-email="${email}" class="flex min-h-11 w-full items-center justify-between gap-3 rounded-lg border border-line px-3 py-2 text-left hover:border-ink"><span class="num text-sm">${email}</span><span class="shrink-0 text-xs font-bold text-ink-muted">${role}</span></button></li>`).join('');
+$$('#demo-accounts button').forEach((b) => b.addEventListener('click', () => { $('#login-email').value = b.dataset.email; $('#login-password').value = 'password'; $('#login-email').focus(); }));
+$('#toggle-password').addEventListener('click', (e) => {
+  const input = $('#login-password');
+  const show = input.type === 'password';
+  input.type = show ? 'text' : 'password';
+  e.currentTarget.textContent = show ? 'Tutup' : 'Lihat';
+  e.currentTarget.setAttribute('aria-label', show ? 'Sembunyikan password' : 'Tampilkan password');
+});
+function fieldError(input, errEl, msg) {
+  input.setAttribute('aria-invalid', msg ? 'true' : 'false');
+  errEl.textContent = msg || '';
+  return !msg;
+}
+let loginFails = 0;
+$('#login-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const email = $('#login-email'), pass = $('#login-password'), alert = $('#login-alert');
+  alert.hidden = true;
+  const ok = [
+    fieldError(email, $('#login-email-err'), !email.value ? 'Email wajib diisi.' : !/^\S+@\S+\.\S+$/.test(email.value) ? 'Format email tidak valid.' : ''),
+    fieldError(pass, $('#login-password-err'), !pass.value ? 'Password wajib diisi.' : ''),
+  ].every(Boolean);
+  if (!ok) return;
+  const btn = $('#login-submit');
+  busy(btn, 'Memeriksa...');
+  setTimeout(() => {
+    idle(btn);
+    const acc = ACCOUNTS.find((a) => a[0] === email.value.trim().toLowerCase());
+    if (!acc || pass.value !== 'password') {
+      loginFails++;
+      alert.textContent = loginFails >= 5 ? 'Terlalu banyak percobaan. Coba lagi dalam 60 detik.' : 'Email atau password salah.';
+      alert.hidden = false;
+      return;
+    }
+    loginFails = 0;
+    location.hash = '#/' + acc[2];
+  }, 700);
+});
+
+/* ---------- Beranda UMKM ---------- */
+$('#umkm-timeline').innerHTML = timeline(loanSteps('verified'));
+$$('[data-monthly]').forEach((el) => { const [P, rate, n] = el.dataset.monthly.split(',').map(Number); el.textContent = rupiah(schedule(P, rate, n).M); });
+$$('[data-monthly-label]').forEach((el) => { const [P, rate, n] = el.dataset.monthlyLabel.split(',').map(Number); el.textContent = `${rupiah(schedule(P, rate, n).M)} / bulan`; });
+
+/* ---------- Form pengajuan ---------- */
+const PLAFON = 36e6;
+let chosen = null;
+$('#product-options').innerHTML = PRODUCTS.map((p) => `
+  <label class="flex min-h-12 cursor-pointer flex-wrap items-center justify-between gap-x-4 rounded-lg border border-line-strong px-4 py-3 has-checked:border-ink has-checked:bg-paper-deep has-focus-visible:outline-2 has-focus-visible:outline-shu-deep">
+    <input type="radio" name="product" value="${p.id}" class="sr-only">
+    <span class="font-bold">${p.name}</span>
+    <span class="num text-sm text-ink-muted">${String(p.rate).replace('.', ',')}% / tahun · ${rupiah(p.min)} s.d. ${rupiah(p.max)}</span>
+  </label>`).join('');
+const fAmount = $('#f-amount'), fTenor = $('#f-tenor'), fPurpose = $('#f-purpose');
+$$('input[name=product]').forEach((r) => r.addEventListener('change', () => {
+  chosen = PRODUCTS.find((p) => p.id === r.value);
+  fTenor.innerHTML = '<option value="">Pilih tenor</option>' + tenors(chosen).map((t) => `<option value="${t}">${t} bulan</option>`).join('');
+  $('#hint-amount').textContent = `Batas produk ini ${rupiah(chosen.min)} s.d. ${rupiah(chosen.max)}.`;
+  $('#err-product').textContent = '';
+  formCalc();
+}));
+fAmount.addEventListener('input', () => { const v = digits(fAmount.value); fAmount.value = v ? v.toLocaleString('id-ID') : ''; fieldError(fAmount, $('#err-amount'), ''); formCalc(); });
+fTenor.addEventListener('change', () => { fieldError(fTenor, $('#err-tenor'), ''); formCalc(); });
+fPurpose.addEventListener('input', () => { fieldError(fPurpose, $('#err-purpose'), ''); $('#purpose-count').textContent = `${fPurpose.value.trim().length} / min. 20`; });
+function formCalc() {
+  const amount = digits(fAmount.value);
+  const pct = Math.min(amount / PLAFON, 1) * 100;
+  const over = amount > PLAFON;
+  $('#plafon-bar').style.width = pct + '%';
+  $('#plafon-bar').className = `h-full rounded-full transition-all ${over ? 'bg-shu-deep' : 'bg-ink'}`;
+  $('#plafon-bar-wrap').setAttribute('aria-valuenow', Math.round(pct));
+  $('#plafon-text').innerHTML = !amount ? 'Belum ada jumlah.' : over
+    ? `<span class="font-bold text-shu-deep">Melebihi plafon ${rupiah(amount - PLAFON)}.</span>`
+    : `Sisa plafon <b>${rupiah(PLAFON - amount)}</b>`;
+  if (chosen && amount && fTenor.value) {
+    const s = schedule(amount, chosen.rate, Number(fTenor.value));
+    $('#f-monthly').textContent = rupiah(s.M);
+    $('#f-monthly-note').textContent = `Total bunga ${rupiah(s.totalInterest)} selama ${fTenor.value} bulan`;
+  } else {
+    $('#f-monthly').textContent = 'Rp0';
+    $('#f-monthly-note').textContent = 'Isi produk, jumlah, dan tenor.';
+  }
+}
+$('#ajukan-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const amount = digits(fAmount.value);
+  $('#err-product').textContent = chosen ? '' : 'Pilih salah satu produk.';
+  const ok = [
+    !!chosen,
+    fieldError(fAmount, $('#err-amount'), !amount ? 'Jumlah pinjaman wajib diisi.'
+      : amount > PLAFON ? `Jumlah melebihi plafon ${rupiah(PLAFON)} (3 × omzet bulanan).`
+      : chosen && (amount < chosen.min || amount > chosen.max) ? `Untuk ${chosen.name}, jumlah harus ${rupiah(chosen.min)} s.d. ${rupiah(chosen.max)}.` : ''),
+    fieldError(fTenor, $('#err-tenor'), !fTenor.value ? 'Pilih tenor.' : ''),
+    fieldError(fPurpose, $('#err-purpose'), fPurpose.value.trim().length < 20 ? 'Jelaskan tujuan minimal 20 karakter.' : ''),
+  ].every(Boolean);
+  if (!ok) { $('[aria-invalid=true], #err-product:not(:empty)')?.closest('label, fieldset')?.scrollIntoView({ behavior: 'smooth', block: 'center' }); return; }
+  const btn = $('#ajukan-submit');
+  busy(btn, 'Mengirim...');
+  setTimeout(() => { idle(btn); toast('Pengajuan MDL-2026-0015 terkirim ke verifikator.'); location.hash = '#/umkm'; }, 800);
+});
+$$('[data-ajukan-state]').forEach((b) => b.addEventListener('click', () => {
+  const blocked = b.dataset.ajukanState === 'blocked';
+  $('#ajukan-form').hidden = blocked;
+  $('#ajukan-blocked').hidden = !blocked;
+  $$('[data-ajukan-state]').forEach((x) => x.setAttribute('aria-pressed', x === b));
+}));
+
+/* ---------- Daftar pengajuan ---------- */
+const LOANS = [
+  ['MDL-2026-0014', 'Kopi Lereng Merapi', 'Kuliner', 'kecil', 75e6, 24, '2026-10-15', 'submitted'],
+  ['MDL-2026-0013', 'Batik Tulis Giriloyo', 'Kerajinan', 'mikro', 30e6, 12, '2026-10-12', 'verified'],
+  ['MDL-2026-0012', 'Warung Makan Bu Sari', 'Kuliner', 'mikro', 25e6, 12, '2026-10-03', 'verified'],
+  ['MDL-2026-0011', 'Bengkel Las Maju Jaya', 'Jasa', 'alat', 120e6, 36, '2026-09-28', 'approved'],
+  ['MDL-2026-0010', 'Gerabah Kasongan Asri', 'Kerajinan', 'mikro', 15e6, 6, '2026-09-20', 'disbursed'],
+  ['MDL-2026-0009', 'Laundry Kilat Sleman', 'Jasa', 'alat', 60e6, 24, '2026-09-14', 'rejected'],
+  ['MDL-2026-0008', 'Bakpia Ngasem', 'Kuliner', 'kecil', 90e6, 18, '2026-09-02', 'disbursed'],
+  ['MDL-2026-0007', 'Toko Kelontong Berkah', 'Perdagangan', 'mikro', 20e6, 12, '2026-08-27', 'disbursed'],
+].map(([code, biz, sector, product, amount, tenor, date, status]) => ({ code, biz, sector, product, amount, tenor, date: new Date(date), status }));
+const list = { status: 'verified', q: '', product: '', page: 1, state: 'data', perPage: 5 };
+$('#list-product').innerHTML += PRODUCTS.map((p) => `<option value="${p.id}">${p.name}</option>`).join('');
+function renderTabs() {
+  const tabs = [['', 'Semua'], ...Object.entries(STATUS).map(([k, v]) => [k, v[0]])];
+  $('#status-tabs').innerHTML = tabs.map(([k, label]) => {
+    const n = LOANS.filter((l) => !k || l.status === k).length;
+    const on = list.status === k;
+    return `<button role="tab" aria-selected="${on}" data-tab="${k}" class="-mb-px flex min-h-11 shrink-0 items-center gap-2 border-b-2 px-3 text-sm ${on ? 'border-shu font-bold text-ink' : 'border-transparent text-ink-muted hover:text-ink'}">${label}<span class="num rounded bg-paper-deep px-1.5 text-xs">${n}</span></button>`;
+  }).join('');
+  $$('[data-tab]').forEach((b) => b.addEventListener('click', () => { list.status = b.dataset.tab; list.page = 1; renderTabs(); renderList(); }));
+}
+function renderList() {
+  const box = $('#list-container');
+  if (list.state === 'loading') {
+    box.innerHTML = `<div class="divide-y divide-line" aria-busy="true" aria-label="Memuat data">${Array.from({ length: 5 }, () => `<div class="flex items-center gap-4 px-5 py-4"><div class="h-4 w-28 animate-pulse rounded bg-paper-deep"></div><div class="h-4 flex-1 animate-pulse rounded bg-paper-deep"></div><div class="h-6 w-24 animate-pulse rounded bg-paper-deep"></div></div>`).join('')}</div>`;
+    return;
+  }
+  if (list.state === 'error') {
+    box.innerHTML = `<div class="px-6 py-14 text-center"><p class="font-display text-xl font-bold">Data gagal dimuat</p><p class="mt-1 text-ink-muted">Server tidak merespons (500). Coba beberapa saat lagi.</p><button id="list-retry" class="mt-5 inline-flex min-h-11 items-center rounded-lg bg-ink px-5 font-bold text-surface hover:bg-ink-soft">Coba lagi</button></div>`;
+    $('#list-retry').addEventListener('click', () => setListState('loading', () => setListState('data')));
+    return;
+  }
+  const q = list.q.toLowerCase();
+  const rows = LOANS.filter((l) => (!list.status || l.status === list.status) && (!list.product || l.product === list.product) && (!q || l.code.toLowerCase().includes(q) || l.biz.toLowerCase().includes(q)));
+  if (!rows.length) {
+    box.innerHTML = `<div class="px-6 py-14 text-center"><p class="font-display text-xl font-bold">Tidak ada pengajuan yang cocok</p><p class="mt-1 text-ink-muted">Ubah kata kunci atau filter untuk melihat pengajuan lain.</p><button id="list-reset" class="mt-5 inline-flex min-h-11 items-center rounded-lg border border-ink px-5 font-bold hover:bg-paper-deep">Hapus filter</button></div>`;
+    $('#list-reset').addEventListener('click', () => { Object.assign(list, { status: '', q: '', product: '', page: 1 }); $('#list-search').value = ''; $('#list-product').value = ''; renderTabs(); renderList(); });
+    return;
+  }
+  const pages = Math.ceil(rows.length / list.perPage);
+  list.page = Math.min(list.page, pages);
+  const pageRows = rows.slice((list.page - 1) * list.perPage, list.page * list.perPage);
+  const pname = (id) => PRODUCTS.find((p) => p.id === id).name;
+  box.innerHTML = `
+    <div class="hidden relative overflow-x-auto xl:block"><table class="num w-full text-sm">
+      <thead class="border-b border-line text-left text-ink-muted"><tr><th class="px-5 py-3 font-medium">Kode</th><th class="px-5 py-3 font-medium">Usaha</th><th class="px-5 py-3 text-right font-medium">Jumlah</th><th class="px-5 py-3 font-medium">Tenor</th><th class="px-5 py-3 font-medium">Diajukan</th><th class="px-5 py-3 font-medium">Status</th><th class="px-5 py-3"><span class="sr-only">Aksi</span></th></tr></thead>
+      <tbody class="divide-y divide-line">${pageRows.map((l) => `<tr class="hover:bg-paper">
+        <td class="px-5 py-3 font-bold whitespace-nowrap">${l.code}</td>
+        <td class="px-5 py-3"><p class="font-bold">${l.biz}</p><p class="text-ink-muted">${l.sector} · ${pname(l.product)}</p></td>
+        <td class="px-5 py-3 text-right whitespace-nowrap">${rupiah(l.amount)}</td><td class="px-5 py-3 whitespace-nowrap">${l.tenor} bln</td><td class="px-5 py-3 whitespace-nowrap">${fmtDate(l.date)}</td>
+        <td class="px-5 py-3">${badge(l.status)}</td>
+        <td class="px-5 py-3 text-right"><a href="#/detail" class="inline-flex min-h-11 items-center rounded-lg px-3 font-bold text-shu-deep hover:bg-shu-soft">${l.status === 'verified' ? 'Periksa' : 'Lihat'}</a></td></tr>`).join('')}</tbody>
+    </table></div>
+    <ul class="divide-y divide-line xl:hidden">${pageRows.map((l) => `<li><a href="#/detail" class="block px-4 py-4 hover:bg-paper">
+      <div class="flex items-start justify-between gap-3"><p class="num text-sm font-bold text-shu-deep">${l.code}</p>${badge(l.status)}</div>
+      <p class="mt-1 font-bold">${l.biz}</p><p class="num text-sm text-ink-muted">${rupiah(l.amount)} · ${l.tenor} bln · ${fmtDate(l.date)}</p></a></li>`).join('')}</ul>
+    <div class="flex flex-wrap items-center justify-between gap-3 border-t border-line px-5 py-3 text-sm">
+      <p class="num text-ink-muted">Menampilkan ${(list.page - 1) * list.perPage + 1} s.d. ${(list.page - 1) * list.perPage + pageRows.length} dari ${rows.length}</p>
+      <div class="flex gap-2">
+        <button data-page="-1" ${list.page === 1 ? 'disabled' : ''} class="inline-flex min-h-11 items-center rounded-lg border border-line-strong px-4 font-bold disabled:opacity-40">Sebelumnya</button>
+        <button data-page="1" ${list.page === pages ? 'disabled' : ''} class="inline-flex min-h-11 items-center rounded-lg border border-line-strong px-4 font-bold disabled:opacity-40">Berikutnya</button>
+      </div>
+    </div>`;
+  $$('[data-page]').forEach((b) => b.addEventListener('click', () => { list.page += Number(b.dataset.page); renderList(); }));
+}
+function setListState(state, then) {
+  list.state = state;
+  $$('[data-list-state]').forEach((x) => x.setAttribute('aria-pressed', x.dataset.listState === state));
+  renderList();
+  if (then) setTimeout(then, 900);
+}
+$$('[data-list-state]').forEach((b) => b.addEventListener('click', () => setListState(b.dataset.listState)));
+let searchTimer;
+$('#list-search').addEventListener('input', (e) => { clearTimeout(searchTimer); searchTimer = setTimeout(() => { list.q = e.target.value; list.page = 1; renderList(); }, 250); });
+$('#list-product').addEventListener('change', (e) => { list.product = e.target.value; list.page = 1; renderList(); });
+renderTabs();
+renderList();
+
+/* ---------- Detail & approval ---------- */
+const sched = schedule(25e6, 12, 12);
+let showAll = false;
+function renderSchedule() {
+  const rows = showAll ? sched.rows : sched.rows.slice(0, 4);
+  $('#schedule-rows').innerHTML = rows.map((r) => `<tr><td class="px-6 py-2.5">${r.i}</td><td class="px-6 py-2.5">${fmtDate(r.due)}</td><td class="px-6 py-2.5 text-right">${rupiah(r.principal)}</td><td class="px-6 py-2.5 text-right">${rupiah(r.interest)}</td><td class="px-6 py-2.5 text-right">${rupiah(r.bal)}</td></tr>`).join('')
+    + (showAll ? `<tr class="font-bold"><td class="px-6 py-3" colspan="2">Total</td><td class="px-6 py-3 text-right">${rupiah(25e6)}</td><td class="px-6 py-3 text-right">${rupiah(sched.totalInterest)}</td><td></td></tr>` : '');
+  $('#schedule-toggle').textContent = showAll ? 'Tampilkan 4 bulan pertama' : 'Tampilkan semua 12 bulan';
+  $('#schedule-toggle').setAttribute('aria-expanded', showAll);
+}
+$('#schedule-toggle').addEventListener('click', () => { showAll = !showAll; renderSchedule(); });
+
+let decisionNote = '';
+function renderDetail() {
+  $('#detail-badge').innerHTML = badge(loanStatus);
+  $('#detail-timeline').innerHTML = timeline(loanSteps());
+  const panel = $('#decision-panel');
+  if (loanStatus !== 'verified') {
+    panel.className = 'rounded-xl border border-line bg-surface p-6';
+    panel.innerHTML = `<h2 id="decision-title" class="text-lg font-bold">Keputusan tersimpan</h2>
+      <p class="mt-2 text-ink-muted">${loanStatus === 'approved' ? 'Pengajuan diteruskan ke admin untuk pencairan dana.' : 'Pelaku usaha akan melihat alasan penolakan di berandanya.'}</p>
+      <button id="decision-reset" class="mt-4 inline-flex min-h-11 items-center text-sm font-bold text-shu-deep hover:underline">Ulangi demo keputusan</button>`;
+    $('#decision-reset').addEventListener('click', () => { loanStatus = 'verified'; decisionNote = ''; renderDetail(); });
+    return;
+  }
+  panel.className = 'rounded-xl border-2 border-ink bg-surface p-6';
+  panel.innerHTML = `<h2 id="decision-title" class="text-lg font-bold">Keputusan Anda</h2>
+    <p class="mt-1 text-sm text-ink-muted">Sebagai manajer, Anda memutuskan tahap persetujuan.</p>
+    <label class="mt-4 grid gap-2"><span class="text-sm font-bold">Catatan</span>
+      <textarea id="decision-note" rows="3" aria-describedby="decision-err" class="rounded-lg border border-line-strong bg-surface px-3 py-2 aria-[invalid=true]:border-shu-deep" placeholder="Wajib diisi jika menolak"></textarea>
+      <span id="decision-err" class="text-sm text-shu-deep"></span></label>
+    <div class="mt-4 grid grid-cols-2 gap-3">
+      <button id="btn-reject" class="inline-flex min-h-12 items-center justify-center rounded-lg border border-ink font-bold hover:bg-paper-deep">Tolak</button>
+      <button id="btn-approve" class="inline-flex min-h-12 items-center justify-center rounded-lg bg-shu font-bold text-surface hover:bg-shu-deep">Setujui</button>
+    </div>`;
+  const note = $('#decision-note');
+  $('#btn-approve').addEventListener('click', async () => {
+    if (!(await confirmDialog({ title: 'Setujui pengajuan ini?', text: 'MDL-2026-0012 akan diteruskan ke admin untuk pencairan Rp25.000.000.', ok: 'Ya, setujui' }))) return;
+    decisionNote = note.value.trim(); loanStatus = 'approved'; renderDetail(); toast('Pengajuan MDL-2026-0012 disetujui.');
+  });
+  $('#btn-reject').addEventListener('click', async () => {
+    if (!fieldError(note, $('#decision-err'), note.value.trim().length < 10 ? 'Tulis alasan penolakan minimal 10 karakter.' : '')) { note.focus(); return; }
+    if (!(await confirmDialog({ title: 'Tolak pengajuan ini?', text: 'Keputusan tidak bisa dibatalkan. Pelaku usaha bisa mengajukan ulang setelahnya.', ok: 'Ya, tolak', danger: true }))) return;
+    decisionNote = note.value.trim(); loanStatus = 'rejected'; renderDetail(); toast('Pengajuan MDL-2026-0012 ditolak.');
+  });
+}
+renderSchedule();
+renderDetail();
+
+/* ---------- Audit log ---------- */
+const AUDIT = [
+  ['17 Okt 2026, 09.12', 'Rina Kusuma', 'Verifikator', 'loan.verified', 'Memverifikasi pengajuan', 'MDL-2026-0013', '10.0.4.21', { status: 'submitted' }, { status: 'verified' }],
+  ['16 Okt 2026, 15.40', 'Dimas Prakoso', 'Manajer', 'loan.approved', 'Menyetujui pengajuan', 'MDL-2026-0011', '10.0.4.18', { status: 'verified' }, { status: 'approved' }],
+  ['16 Okt 2026, 10.05', 'Admin Modalin', 'Admin', 'loan.disbursed', 'Mencairkan dana', 'MDL-2026-0010', '10.0.4.2', { status: 'approved' }, { status: 'disbursed', installments_created: 6 }],
+  ['15 Okt 2026, 13.22', 'Admin Modalin', 'Admin', 'product.updated', 'Mengubah produk', 'Modal Kerja Kecil', '10.0.4.2', { interest_rate: 11 }, { interest_rate: 10.5 }],
+  ['14 Okt 2026, 08.51', 'Tamu', 'Belum login', 'auth.throttled', 'Login diblokir 60 detik', 'umkm@modalin.test', '36.71.140.9', null, { attempts: 5 }],
+  ['3 Okt 2026, 19.30', 'Sari Wulandari', 'Pelaku usaha', 'loan.submitted', 'Mengajukan pembiayaan', 'MDL-2026-0012', '36.71.88.120', null, { status: 'submitted', amount: 25000000, tenor_months: 12 }],
+];
+function renderAudit() {
+  const f = $('#audit-filter').value;
+  const rows = AUDIT.map((r, i) => [i, ...r]).filter((r) => !f || r[4].startsWith(f + '.'));
+  $('#audit-rows').innerHTML = rows.length ? rows.map(([i, time, user, role, action, label, obj, ip, oldV, newV]) => `
+    <tr class="border-t border-line first:border-t-0">
+      <td class="px-5 py-3 whitespace-nowrap">${time}</td>
+      <td class="px-5 py-3"><p class="font-bold">${user}</p><p class="text-ink-muted">${role}</p></td>
+      <td class="px-5 py-3"><p>${label}</p><code class="text-xs text-ink-muted">${action}</code></td>
+      <td class="px-5 py-3 font-bold">${obj}</td>
+      <td class="px-5 py-3 text-ink-muted">${ip}</td>
+      <td class="px-5 py-3 text-right"><button data-audit="${i}" aria-expanded="false" aria-controls="audit-detail-${i}" class="inline-flex min-h-11 items-center rounded-lg px-3 font-bold text-shu-deep hover:bg-shu-soft">Detail</button></td>
+    </tr>
+    <tr id="audit-detail-${i}" hidden><td colspan="6" class="px-5 pb-4">
+      <div class="grid gap-3 sm:grid-cols-2">
+        <div><p class="text-xs font-bold text-ink-muted">SEBELUM</p><pre class="mt-1 relative overflow-x-auto rounded-lg bg-paper-deep p-3 text-xs">${oldV ? JSON.stringify(oldV, null, 2) : 'null'}</pre></div>
+        <div><p class="text-xs font-bold text-ink-muted">SESUDAH</p><pre class="mt-1 relative overflow-x-auto rounded-lg bg-paper-deep p-3 text-xs">${JSON.stringify(newV, null, 2)}</pre></div>
+      </div></td></tr>`).join('')
+    : `<tr><td colspan="6" class="px-5 py-12 text-center text-ink-muted">Belum ada log untuk aksi ini.</td></tr>`;
+  $$('[data-audit]').forEach((b) => b.addEventListener('click', () => {
+    const row = document.getElementById('audit-detail-' + b.dataset.audit);
+    row.hidden = !row.hidden;
+    b.setAttribute('aria-expanded', !row.hidden);
+    b.textContent = row.hidden ? 'Detail' : 'Tutup';
+  }));
+}
+$('#audit-filter').addEventListener('change', renderAudit);
+renderAudit();
+
+renderBadges();
+route();
+</script>
+</body>
+</html>
