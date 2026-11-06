@@ -3,7 +3,7 @@ import api, { toast } from '../../lib/api'
 import { useAuth } from '../../lib/auth'
 import { useApi } from '../../lib/useApi'
 import { ROLE_LABEL } from '../../lib/format'
-import { Button, Card, ConfirmModal, DataState, Field, Modal, PageHeader, Pagination, inputClass } from '../../components/ui'
+import { Button, Card, ConfirmModal, DataState, Field, Modal, PageHeader, Pagination, inputClass, selectClass } from '../../components/ui'
 
 const STAFF_ROLES = ['verifikator', 'manajer', 'admin']
 
@@ -40,14 +40,14 @@ function UserForm({ user, onSaved, onClose }) {
       <Field label="Nama" error={errors.name}><input value={form.name} onChange={set('name')} aria-invalid={!!errors.name} className={inputClass} /></Field>
       <Field label="Email" error={errors.email}><input type="email" value={form.email} onChange={set('email')} aria-invalid={!!errors.email} className={inputClass} /></Field>
       <Field label="Peran" error={errors.role}>
-        <select value={form.role} onChange={set('role')} className={inputClass}>
+        <select value={form.role} onChange={set('role')} className={selectClass}>
           {STAFF_ROLES.map((r) => <option key={r} value={r}>{ROLE_LABEL[r]}</option>)}
         </select>
       </Field>
       <Field label="Password" error={errors.password} hint={user ? 'Kosongkan jika tidak diganti.' : 'Minimal 8 karakter, berisi huruf dan angka.'}>
         <input type="password" autoComplete="new-password" value={form.password} onChange={set('password')} aria-invalid={!!errors.password} className={inputClass} />
       </Field>
-      <div className="mt-2 flex justify-end gap-3">
+      <div className="mt-4 flex justify-end gap-3 border-t border-line pt-5">
         <Button type="button" variant="outline" onClick={onClose}>Batal</Button>
         <Button type="submit" loading={loading}>Simpan</Button>
       </div>
@@ -84,33 +84,33 @@ export default function Users() {
 
   return (
     <>
-      <PageHeader title="Pengguna" text="Akun petugas dibuat di sini. Akun pelaku usaha dibuat lewat pendaftaran.">
-        <Button onClick={() => setEditing('new')}>Tambah petugas</Button>
+      <PageHeader eyebrow="Admin / Pengguna" title="Pengguna" text="Akun petugas dibuat di sini. Akun pelaku usaha dibuat lewat pendaftaran.">
+        <Button arrow onClick={() => setEditing('new')}>Tambah petugas</Button>
       </PageHeader>
-      <div className="mt-6 flex flex-wrap gap-3">
-        <input type="search" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Cari nama atau email" aria-label="Cari nama atau email" className={`${inputClass} min-h-11 flex-1 sm:max-w-sm`} />
-        <select value={params.role} onChange={(e) => setParams({ ...params, role: e.target.value, page: 1 })} aria-label="Filter peran" className={`${inputClass} min-h-11 sm:w-auto`}>
+      <div className="mt-8 flex flex-wrap gap-3">
+        <input type="search" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Cari nama atau email" aria-label="Cari nama atau email" className={`${inputClass} flex-1 sm:max-w-sm`} />
+        <select value={params.role} onChange={(e) => setParams({ ...params, role: e.target.value, page: 1 })} aria-label="Filter peran" className={`${selectClass} sm:w-auto`}>
           <option value="">Semua peran</option>
           {Object.entries(ROLE_LABEL).map(([value, label]) => <option key={value} value={value}>{label}</option>)}
         </select>
       </div>
-      <Card className="mt-4">
+      <Card className="mt-5">
         <DataState loading={loading} error={error} onRetry={reload} empty={data ? rows.length === 0 : undefined}
           emptyTitle="Tidak ada pengguna yang cocok" emptyText="Ubah kata kunci atau filter peran.">
           <div className="relative overflow-x-auto">
-            <table className="w-full min-w-[600px] text-sm">
-              <thead className="border-b border-line text-left text-ink-muted">
-                <tr><th className="px-5 py-3 font-normal">Nama</th><th className="px-5 py-3 font-normal">Email</th><th className="px-5 py-3 font-normal">Peran</th><th className="px-5 py-3"><span className="sr-only">Aksi</span></th></tr>
+            <table className="w-full min-w-[600px] text-[14px]">
+              <thead className="border-b border-ink text-left">
+                <tr className="font-mono text-[11px] tracking-[0.12em] text-ink-subtle uppercase"><th className="px-6 py-3.5 font-normal">Nama</th><th className="px-6 py-3.5 font-normal">Email</th><th className="px-6 py-3.5 font-normal">Peran</th><th className="px-6 py-3.5"><span className="sr-only">Aksi</span></th></tr>
               </thead>
               <tbody className="divide-y divide-line">
                 {rows.map((u) => (
-                  <tr key={u.id}>
-                    <td className="px-5 py-3 font-bold">{u.name}{u.id === me.id && <span className="ml-2 text-xs font-normal text-ink-muted">(Anda)</span>}</td>
-                    <td className="px-5 py-3">{u.email}</td>
-                    <td className="px-5 py-3">{ROLE_LABEL[u.role]}</td>
-                    <td className="px-5 py-3 text-right whitespace-nowrap">
-                      {STAFF_ROLES.includes(u.role) && <Button variant="ghost" className="px-3" onClick={() => setEditing(u)}>Ubah</Button>}
-                      {u.id !== me.id && <Button variant="ghost" className="px-3" onClick={() => setDeleting(u)}>Hapus</Button>}
+                  <tr key={u.id} className="hover:bg-paper-deep">
+                    <td className="px-6 py-4 font-medium">{u.name}{u.id === me.id && <span className="ml-2 font-mono text-[11px] font-normal tracking-[0.1em] text-ai uppercase">Anda</span>}</td>
+                    <td className="px-6 py-4 text-ink-muted">{u.email}</td>
+                    <td className="px-6 py-4"><span className="font-mono text-[11px] tracking-[0.1em] text-ink-muted uppercase">{ROLE_LABEL[u.role]}</span></td>
+                    <td className="px-6 py-4 text-right whitespace-nowrap">
+                      {STAFF_ROLES.includes(u.role) && <Button variant="ghost" size="sm" onClick={() => setEditing(u)}>Ubah</Button>}
+                      {u.id !== me.id && <Button variant="remove" size="sm" onClick={() => setDeleting(u)}>Hapus</Button>}
                     </td>
                   </tr>
                 ))}

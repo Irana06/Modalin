@@ -33,11 +33,11 @@ export const ACTIVE_STATUSES = ['submitted', 'verified', 'approved']
 export const SECTORS = ['Kuliner', 'Kerajinan', 'Fesyen', 'Jasa', 'Perdagangan', 'Pertanian']
 
 export const STATUS = {
-  submitted: { label: 'Menunggu verifikasi', className: 'bg-shu-soft text-shu-deep' },
-  verified: { label: 'Menunggu persetujuan', className: 'bg-shu-soft text-shu-deep' },
-  approved: { label: 'Siap dicairkan', className: 'bg-cream text-ink' },
-  disbursed: { label: 'Dana cair', className: 'bg-daun-soft text-daun' },
-  rejected: { label: 'Ditolak', className: 'bg-paper-deep text-ink-muted' },
+  submitted: { label: 'Menunggu verifikasi', className: 'bg-ai-soft text-ai-deep', active: true },
+  verified: { label: 'Menunggu persetujuan', className: 'bg-ai-soft text-ai-deep', active: true },
+  approved: { label: 'Siap dicairkan', className: 'bg-ai text-paper', active: true },
+  disbursed: { label: 'Dana cair', className: 'bg-ink text-paper' },
+  rejected: { label: 'Ditolak', className: 'bg-beni-soft text-beni' },
 }
 
 export const ROLE_LABEL = { admin: 'Admin', umkm: 'Pelaku usaha', verifikator: 'Verifikator', manajer: 'Manajer' }

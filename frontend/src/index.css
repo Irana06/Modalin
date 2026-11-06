@@ -1,54 +1,155 @@
 @import 'tailwindcss';
 
 @theme {
-  --font-sans: 'Zen Kaku Gothic New', ui-sans-serif, system-ui, sans-serif;
-  --font-display: 'Zen Maru Gothic', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Geist Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'Geist Mono', ui-monospace, monospace;
+  /* Mincho only for the few kanji accents; Windows and macOS ship one, so no webfont is loaded. */
+  --font-mincho: 'Yu Mincho', 'YuMincho', 'Hiragino Mincho ProN', 'Noto Serif JP', serif;
 
-  --color-paper: #fbf5ef;
-  --color-paper-deep: #f5e9de;
-  --color-surface: #fffcf9;
-  --color-line: #eddccd;
-  --color-line-strong: #e3cdbd;
-  --color-ink: #35231c;
-  --color-ink-soft: #4a3a33;
-  --color-ink-muted: #76625a;
-  --color-shu: #d53b3a;
-  --color-shu-deep: #b32e2d;
-  --color-shu-soft: #fce4e1;
-  --color-cream: #f7deca;
-  --color-night: #44302a;
-  --color-night-muted: #cdb5a7;
-  --color-daun: #2f6b45;
-  --color-daun-soft: #e2efe5;
+  /* Sumi & Ai: ink on washi paper, with ai (indigo) used sparingly. Same palette as miravatech. */
+  --color-paper: #f5f3ee;
+  --color-paper-deep: #ece9e2;
+  --color-surface: #fbfaf7;
+  --color-line: #dcd8cf;
+  --color-line-strong: #bdb8ad;
+  --color-ink: #161616;
+  --color-ink-soft: #2a2927;
+  --color-ink-muted: #57544e;
+  --color-ink-subtle: #6b6760;
+  --color-ai: #2c3a8f;
+  --color-ai-deep: #1e2866;
+  --color-ai-soft: #e4e6ef;
+  --color-ai-light: #a3aee8;
+  --color-night: #141414;
+  --color-night-text: #ecebe6;
+  --color-night-line: #2e2d2a;
+  --color-night-muted: #a19e96;
+  /* Errors and rejections only. */
+  --color-beni: #a52a22;
+  --color-beni-soft: #f6e4e1;
 
-  --animate-page-in: page-in 150ms ease-out;
-  @keyframes page-in {
-    from { opacity: 0; transform: translateY(4px); }
-  }
-  --animate-dialog-in: dialog-in 160ms ease-out;
-  @keyframes dialog-in {
-    from { opacity: 0; transform: translateY(8px) scale(0.98); }
-  }
-}
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 
-/* Kawung, a Javanese batik motif: four petals pointing at one center. Used on one dark band per page. */
-@utility kawung {
-  background-color: var(--color-ink);
-  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='72' height='72' viewBox='0 0 72 72'><g fill='%2344302a'><ellipse cx='18' cy='18' rx='8' ry='15' transform='rotate(-45 18 18)'/><ellipse cx='54' cy='18' rx='8' ry='15' transform='rotate(45 54 18)'/><ellipse cx='18' cy='54' rx='8' ry='15' transform='rotate(45 18 54)'/><ellipse cx='54' cy='54' rx='8' ry='15' transform='rotate(-45 54 54)'/></g><g fill='%23533b33'><circle cx='36' cy='36' r='3'/><circle cx='0' cy='0' r='3'/><circle cx='72' cy='0' r='3'/><circle cx='0' cy='72' r='3'/><circle cx='72' cy='72' r='3'/></g></svg>");
-  background-size: 72px 72px;
+  --animate-page-in: fade-up 0.8s var(--ease-out-expo) both;
+  --animate-dialog-in: dialog-in 0.6s var(--ease-out-expo);
+  --animate-sheet-in: sheet-in 0.6s var(--ease-out-expo);
 }
 
 @layer base {
   body { @apply bg-paper text-ink font-sans antialiased; }
-  h1, h2, h3 { @apply font-display; }
-  :focus-visible { outline: 2px solid var(--color-shu-deep); outline-offset: 2px; }
-  a, button, tr, input, select, textarea, label { transition: color 150ms, background-color 150ms, border-color 150ms, opacity 150ms; }
+  :focus-visible { outline: 2px solid var(--color-ai); outline-offset: 2px; }
+  ::selection { background: var(--color-ai); color: var(--color-paper); }
+  a, button, tr, input, select, textarea, label { transition: color 0.4s, background-color 0.4s, border-color 0.4s, opacity 0.4s; transition-timing-function: var(--ease-out-expo); }
   /* Tailwind v4 resets buttons to the default cursor; every clickable control gets the pointer back. */
-  button:not(:disabled), select:not(:disabled), [role='tab'], label:has(> input[type='radio']),
+  button:not(:disabled), select:not(:disabled), [role='tab'], summary, label:has(> input[type='radio']),
   input[type='range'], input[type='checkbox'] { cursor: pointer; }
   button:disabled, select:disabled { cursor: not-allowed; }
-  dialog::backdrop { background: rgb(53 35 28 / 0.45); }
+  dialog::backdrop { background: rgb(22 22 22 / 0.5); backdrop-filter: blur(2px); }
 }
+
+/* Native select without the browser arrow, with a thin chevron in its place. */
+@utility select-chevron {
+  appearance: none;
+  padding-right: 2.5rem;
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2357544e' stroke-width='1.5'><path d='m6 9 6 6 6-6'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 0.85rem center;
+  background-size: 1rem;
+}
+
+/* Range slider: 1px ink track, square thumb that grows while held. */
+@utility range-ink {
+  appearance: none;
+  height: 1.5rem;
+  background: linear-gradient(var(--color-ink), var(--color-ink)) center / 100% 1px no-repeat;
+  &::-webkit-slider-thumb {
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    background: var(--color-ink);
+    transition: transform 0.4s var(--ease-out-expo), background-color 0.4s;
+  }
+  &::-moz-range-thumb { width: 14px; height: 14px; border: 0; border-radius: 0; background: var(--color-ink); }
+  &:hover::-webkit-slider-thumb { background: var(--color-ai); }
+  &:active::-webkit-slider-thumb { transform: scale(1.4); }
+}
+
+/* Vertical Japanese label (tategaki), set in Mincho. */
+@utility tategaki {
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  font-family: var(--font-mincho);
+  letter-spacing: 0.35em;
+}
+
+/* Underline that sweeps in from the left on hover. */
+@utility link-sweep {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  background-size: 0% 1px;
+  transition: background-size 0.5s var(--ease-out-expo), color 0.4s;
+  &:hover, &:focus-visible { background-size: 100% 1px; }
+}
+
+/* Sumi wash: an ink panel sweeps in from the left behind the content on hover. */
+@utility ink-wash {
+  position: relative;
+  isolation: isolate;
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--color-ink);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.7s var(--ease-out-expo);
+  }
+  @media (hover: hover) {
+    &:hover { color: var(--color-paper); }
+    &:hover::before { transform: scaleX(1); }
+  }
+}
+
+/*
+ * Motion. Elements start hidden only once JS marks the page ready, so content stays
+ * visible without JS, and everything is skipped for people who ask for reduced motion.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  .motion-ready [data-reveal] {
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 1s var(--ease-out-expo), transform 1.2s var(--ease-out-expo);
+    transition-delay: var(--delay, 0ms);
+  }
+  .motion-ready [data-reveal][data-shown] { opacity: 1; transform: none; }
+
+  /* Hairline that draws itself from left to right. */
+  .motion-ready [data-rule] {
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 1.4s var(--ease-out-expo);
+    transition-delay: var(--delay, 0ms);
+  }
+  .motion-ready [data-rule][data-shown] { transform: none; }
+
+  /* A line of text rising from behind a mask. */
+  .line-mask > span {
+    display: block;
+    animation: line-rise 1.3s var(--ease-out-expo) both;
+    animation-delay: var(--delay, 0ms);
+  }
+  .fade-in { animation: fade-in 1.4s var(--ease-out-expo) both; animation-delay: var(--delay, 0ms); }
+}
+
+.line-mask { display: block; overflow: hidden; padding-bottom: 0.08em; }
+
+@keyframes line-rise { from { transform: translateY(105%); } }
+@keyframes fade-in { from { opacity: 0; } }
+@keyframes fade-up { from { opacity: 0; transform: translateY(10px); } }
+@keyframes dialog-in { from { opacity: 0; transform: translateY(16px); } }
+@keyframes sheet-in { from { transform: translateX(100%); } }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }

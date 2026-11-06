@@ -49,8 +49,8 @@ function ProductForm({ product, onSaved, onClose }) {
         <input type="number" step="0.1" value={form.interest_rate} onChange={(e) => set('interest_rate', e.target.value)} aria-invalid={!!errors.interest_rate} className={inputClass} />
       </Field>
       <label className="flex min-h-12 items-center gap-3 self-end">
-        <input type="checkbox" checked={form.is_active} onChange={(e) => set('is_active', e.target.checked)} className="size-5 accent-shu" />
-        <span className="font-bold">Aktif untuk pengajuan</span>
+        <input type="checkbox" checked={form.is_active} onChange={(e) => set('is_active', e.target.checked)} className="size-4 accent-ink" />
+        <span className="text-[14px] font-medium">Aktif untuk pengajuan</span>
       </label>
       <Field label="Jumlah minimal" error={errors.min_amount}><MoneyInput value={form.min_amount} onChange={(v) => set('min_amount', v)} invalid={!!errors.min_amount} /></Field>
       <Field label="Jumlah maksimal" error={errors.max_amount}><MoneyInput value={form.max_amount} onChange={(v) => set('max_amount', v)} invalid={!!errors.max_amount} /></Field>
@@ -60,7 +60,7 @@ function ProductForm({ product, onSaved, onClose }) {
       <Field label="Tenor maksimal (bulan)" error={errors.max_tenor}>
         <input type="number" value={form.max_tenor} onChange={(e) => set('max_tenor', e.target.value)} aria-invalid={!!errors.max_tenor} className={inputClass} />
       </Field>
-      <div className="mt-2 flex justify-end gap-3 sm:col-span-2">
+      <div className="mt-4 flex justify-end gap-3 border-t border-line pt-5 sm:col-span-2">
         <Button type="button" variant="outline" onClick={onClose}>Batal</Button>
         <Button type="submit" loading={loading}>Simpan</Button>
       </div>
@@ -90,28 +90,28 @@ export default function Products() {
 
   return (
     <>
-      <PageHeader title="Produk pembiayaan" text="Produk nonaktif tidak bisa dipilih di pengajuan baru. Pengajuan lama tetap memakai bunga saat diajukan.">
-        <Button onClick={() => setEditing('new')}>Tambah produk</Button>
+      <PageHeader eyebrow="Admin / Produk" title="Produk pembiayaan" text="Produk nonaktif tidak bisa dipilih di pengajuan baru. Pengajuan lama tetap memakai bunga saat diajukan.">
+        <Button arrow onClick={() => setEditing('new')}>Tambah produk</Button>
       </PageHeader>
-      <Card className="mt-6">
+      <Card className="mt-8">
         <DataState loading={loading} error={error} onRetry={reload} empty={data ? rows.length === 0 : undefined}
           emptyTitle="Belum ada produk" emptyText="Tambahkan produk agar pelaku usaha bisa mengajukan pembiayaan.">
           <div className="relative overflow-x-auto">
-            <table className="w-full min-w-[720px] text-sm tabular-nums">
-              <thead className="border-b border-line text-left text-ink-muted">
-                <tr><th className="px-5 py-3 font-normal">Produk</th><th className="px-5 py-3 font-normal">Bunga</th><th className="px-5 py-3 font-normal">Jumlah</th><th className="px-5 py-3 font-normal">Tenor</th><th className="px-5 py-3 font-normal">Status</th><th className="px-5 py-3"><span className="sr-only">Aksi</span></th></tr>
+            <table className="w-full min-w-[720px] text-[14px] tabular-nums">
+              <thead className="border-b border-ink text-left">
+                <tr className="font-mono text-[11px] tracking-[0.12em] text-ink-subtle uppercase"><th className="px-6 py-3.5 font-normal">Produk</th><th className="px-6 py-3.5 font-normal">Bunga</th><th className="px-6 py-3.5 font-normal">Jumlah</th><th className="px-6 py-3.5 font-normal">Tenor</th><th className="px-6 py-3.5 font-normal">Status</th><th className="px-6 py-3.5"><span className="sr-only">Aksi</span></th></tr>
               </thead>
               <tbody className="divide-y divide-line">
                 {rows.map((p) => (
-                  <tr key={p.id}>
-                    <td className="px-5 py-3 font-bold">{p.name}</td>
-                    <td className="px-5 py-3">{percent(p.interest_rate)}</td>
-                    <td className="px-5 py-3">{rupiah(p.min_amount)} s.d. {rupiah(p.max_amount)}</td>
-                    <td className="px-5 py-3">{p.min_tenor} s.d. {p.max_tenor} bln</td>
-                    <td className="px-5 py-3">{p.is_active ? <span className="font-bold text-daun">Aktif</span> : <span className="text-ink-muted">Nonaktif</span>}</td>
-                    <td className="px-5 py-3 text-right whitespace-nowrap">
-                      <Button variant="ghost" className="px-3" onClick={() => setEditing(p)}>Ubah</Button>
-                      <Button variant="ghost" className="px-3" onClick={() => setDeleting(p)}>Hapus</Button>
+                  <tr key={p.id} className="hover:bg-paper-deep">
+                    <td className="px-6 py-4 font-medium">{p.name}</td>
+                    <td className="px-6 py-4">{percent(p.interest_rate)}</td>
+                    <td className="px-6 py-4">{rupiah(p.min_amount)} s.d. {rupiah(p.max_amount)}</td>
+                    <td className="px-6 py-4 text-ink-muted">{p.min_tenor} s.d. {p.max_tenor} bln</td>
+                    <td className="px-6 py-4">{p.is_active ? <span className="inline-flex items-center gap-2"><span className="size-1.5 rounded-full bg-ai" />Aktif</span> : <span className="text-ink-subtle">Nonaktif</span>}</td>
+                    <td className="px-6 py-4 text-right whitespace-nowrap">
+                      <Button variant="ghost" size="sm" onClick={() => setEditing(p)}>Ubah</Button>
+                      <Button variant="remove" size="sm" onClick={() => setDeleting(p)}>Hapus</Button>
                     </td>
                   </tr>
                 ))}

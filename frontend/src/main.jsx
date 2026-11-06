@@ -1,10 +1,11 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Route, Routes } from 'react-router'
-// Latin subset only: the full packages ship every Japanese subset and triple the CSS size.
-import '@fontsource/zen-kaku-gothic-new/latin-400.css'
-import '@fontsource/zen-kaku-gothic-new/latin-700.css'
-import '@fontsource/zen-maru-gothic/latin-700.css'
+// Latin subset only, three weights: light for headlines, regular for text, medium for labels.
+import '@fontsource/geist-sans/latin-300.css'
+import '@fontsource/geist-sans/latin-400.css'
+import '@fontsource/geist-sans/latin-500.css'
+import '@fontsource/geist-mono/latin-400.css'
 import './index.css'
 import { AuthProvider, RequireRole } from './lib/auth'
 import { ToastHost } from './components/ui'
@@ -20,6 +21,9 @@ import Products from './pages/admin/Products'
 import Users from './pages/admin/Users'
 import AuditLogs from './pages/admin/AuditLogs'
 import NotFound from './pages/NotFound'
+
+// Scroll reveals hide content only from here on, so the page still reads fine if JS fails to load.
+document.documentElement.classList.add('motion-ready')
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

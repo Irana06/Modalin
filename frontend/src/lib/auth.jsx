@@ -40,7 +40,7 @@ export function RequireRole({ roles }) {
   const { user, checking } = useAuth()
   const location = useLocation()
 
-  if (checking) return <div className="grid min-h-screen place-items-center"><Spinner className="size-8 text-shu" /></div>
+  if (checking) return <div className="grid min-h-screen place-items-center"><Spinner className="size-8 text-ai" /></div>
   if (!user) return <Navigate to="/masuk" replace state={{ from: location.pathname }} />
   if (roles && !roles.includes(user.role)) return <Navigate to={homePath(user)} replace />
   return <Outlet />

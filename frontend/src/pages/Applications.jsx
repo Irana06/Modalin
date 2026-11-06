@@ -3,7 +3,7 @@ import { Link } from 'react-router'
 import { useAuth } from '../lib/auth'
 import { useApi } from '../lib/useApi'
 import { REVIEWER, STATUS, formatDate, rupiah } from '../lib/format'
-import { Button, Card, DataState, PageHeader, Pagination, StatusBadge, inputClass } from '../components/ui'
+import { Button, Card, DataState, Icon, PageHeader, Pagination, StatusBadge, Tabs, inputClass, selectClass } from '../components/ui'
 
 const TASK = { verifikator: 'submitted', manajer: 'verified', admin: 'approved' }
 
@@ -22,60 +22,56 @@ export default function Applications() {
   const setFilter = (key, value) => setFilters((f) => ({ ...f, [key]: value, page: 1 }))
   const counts = data?.counts ?? {}
   const total = Object.values(counts).reduce((a, b) => a + b, 0)
-  const tabs = [['', 'Semua', total], ...Object.entries(STATUS).map(([key, s]) => [key, s.label, counts[key] ?? 0])]
+  const tabs = [{ key: '', label: 'Semua', count: total }, ...Object.entries(STATUS).map(([key, s]) => ({ key, label: s.label, count: counts[key] ?? 0 }))]
   const rows = data?.data ?? []
   const canDecide = (status) => REVIEWER[status] === user.role
 
   return (
     <>
-      <PageHeader title="Pengajuan masuk" text={`Anda memproses pengajuan berstatus "${STATUS[TASK[user.role]].label}".`} />
+      <PageHeader eyebrow="Pengajuan masuk" title="Antrean pengajuan" text={`Anda memproses pengajuan berstatus "${STATUS[TASK[user.role]].label}".`} />
 
-      <div className="mt-6 flex gap-1 overflow-x-auto overflow-y-hidden border-b border-line" role="tablist" aria-label="Filter status">
-        {tabs.map(([key, label, count]) => (
-          <button key={key} role="tab" aria-selected={filters.status === key} onClick={() => setFilter('status', key)}
-            className={`flex min-h-11 shrink-0 items-center gap-2 rounded-t-lg border-b-2 px-3 text-sm hover:bg-paper-deep ${filters.status === key ? 'border-shu font-bold' : 'border-transparent text-ink-muted hover:text-ink'}`}>
-            {label}<span className="rounded bg-paper-deep px-1.5 text-xs tabular-nums">{count}</span>
-          </button>
-        ))}
-      </div>
+      <Tabs label="Filter status" items={tabs} value={filters.status} onChange={(key) => setFilter('status', key)} className="mt-6 border-b border-line" />
 
-      <div className="mt-4 flex flex-wrap gap-3">
-        <input type="search" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Cari kode atau nama usaha"
-          aria-label="Cari kode atau nama usaha" className={`${inputClass} min-h-11 flex-1 sm:max-w-sm`} />
-        <select value={filters.loan_product_id} onChange={(e) => setFilter('loan_product_id', e.target.value)} aria-label="Filter produk" className={`${inputClass} min-h-11 sm:w-auto`}>
+      <div className="mt-5 flex flex-wrap gap-3">
+        <div className="relative flex-1 sm:max-w-sm">
+          <Icon name="search" className="pointer-events-none absolute top-1/2 left-3.5 size-4 -translate-y-1/2 text-ink-subtle" />
+          <input type="search" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Cari kode atau nama usaha"
+            aria-label="Cari kode atau nama usaha" className={`${inputClass} pl-10`} />
+        </div>
+        <select value={filters.loan_product_id} onChange={(e) => setFilter('loan_product_id', e.target.value)} aria-label="Filter produk" className={`${selectClass} sm:w-auto`}>
           <option value="">Semua produk</option>
           {products.data?.map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}
         </select>
       </div>
 
-      <Card className="mt-4">
+      <Card className="mt-5">
         <DataState loading={loading} error={error} onRetry={reload} empty={data ? rows.length === 0 : undefined}
           emptyTitle="Tidak ada pengajuan yang cocok" emptyText="Ubah kata kunci atau filter untuk melihat pengajuan lain."
           emptyAction={(filters.search || filters.loan_product_id || filters.status) && (
             <Button variant="outline" onClick={() => { setSearch(''); setFilters({ status: '', search: '', loan_product_id: '', page: 1 }) }}>Hapus filter</Button>
           )}>
           <div className="relative hidden overflow-x-auto xl:block">
-            <table className="w-full text-sm tabular-nums">
-              <thead className="border-b border-line text-left text-ink-muted">
-                <tr>
-                  <th className="px-5 py-3 font-normal">Kode</th><th className="px-5 py-3 font-normal">Usaha</th>
-                  <th className="px-5 py-3 text-right font-normal">Jumlah</th><th className="px-5 py-3 font-normal">Tenor</th>
-                  <th className="px-5 py-3 font-normal">Diajukan</th><th className="px-5 py-3 font-normal">Status</th>
-                  <th className="px-5 py-3"><span className="sr-only">Aksi</span></th>
+            <table className="w-full text-[14px] tabular-nums">
+              <thead className="border-b border-ink text-left">
+                <tr className="font-mono text-[11px] tracking-[0.12em] text-ink-subtle uppercase">
+                  <th className="px-6 py-3.5 font-normal">Kode</th><th className="px-6 py-3.5 font-normal">Usaha</th>
+                  <th className="px-6 py-3.5 text-right font-normal">Jumlah</th><th className="px-6 py-3.5 font-normal">Tenor</th>
+                  <th className="px-6 py-3.5 font-normal">Diajukan</th><th className="px-6 py-3.5 font-normal">Status</th>
+                  <th className="px-6 py-3.5"><span className="sr-only">Aksi</span></th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-line">
                 {rows.map((loan) => (
-                  <tr key={loan.id} className="hover:bg-paper">
-                    <td className="px-5 py-3 font-bold whitespace-nowrap">{loan.code}</td>
-                    <td className="px-5 py-3"><p className="font-bold">{loan.business.name}</p><p className="text-ink-muted">{loan.business.sector} · {loan.product.name}</p></td>
-                    <td className="px-5 py-3 text-right whitespace-nowrap">{rupiah(loan.amount)}</td>
-                    <td className="px-5 py-3 whitespace-nowrap">{loan.tenor_months} bln</td>
-                    <td className="px-5 py-3 whitespace-nowrap">{formatDate(loan.created_at)}</td>
-                    <td className="px-5 py-3"><StatusBadge status={loan.status} /></td>
-                    <td className="px-5 py-3 text-right">
-                      <Link to={`/app/pengajuan/${loan.id}`} className="inline-flex min-h-11 items-center rounded-lg px-3 font-bold text-shu-deep hover:bg-shu-soft">
-                        {canDecide(loan.status) ? 'Periksa' : 'Lihat'}
+                  <tr key={loan.id} className="group hover:bg-paper-deep">
+                    <td className="px-6 py-4 font-mono text-[13px] whitespace-nowrap">{loan.code}</td>
+                    <td className="px-6 py-4"><p className="font-medium">{loan.business.name}</p><p className="text-[13px] text-ink-subtle">{loan.business.sector} · {loan.product.name}</p></td>
+                    <td className="px-6 py-4 text-right whitespace-nowrap">{rupiah(loan.amount)}</td>
+                    <td className="px-6 py-4 whitespace-nowrap">{loan.tenor_months} bln</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-ink-muted">{formatDate(loan.created_at)}</td>
+                    <td className="px-6 py-4"><StatusBadge status={loan.status} /></td>
+                    <td className="px-6 py-4 text-right">
+                      <Link to={`/app/pengajuan/${loan.id}`} className={`inline-flex h-10 items-center gap-2 px-4 text-[13px] font-medium [&_svg]:transition-transform [&_svg]:duration-500 hover:[&_svg]:translate-x-1 ${canDecide(loan.status) ? 'bg-ink text-paper hover:bg-ai' : 'text-ai hover:bg-ai-soft'}`}>
+                        {canDecide(loan.status) ? 'Periksa' : 'Lihat'}<Icon name="arrow" className="size-3.5" />
                       </Link>
                     </td>
                   </tr>
@@ -86,10 +82,10 @@ export default function Applications() {
           <ul className="divide-y divide-line xl:hidden">
             {rows.map((loan) => (
               <li key={loan.id}>
-                <Link to={`/app/pengajuan/${loan.id}`} className="block px-4 py-4 hover:bg-paper">
-                  <div className="flex items-start justify-between gap-3"><p className="text-sm font-bold text-shu-deep tabular-nums">{loan.code}</p><StatusBadge status={loan.status} /></div>
-                  <p className="mt-1 font-bold">{loan.business.name}</p>
-                  <p className="text-sm text-ink-muted tabular-nums">{rupiah(loan.amount)} · {loan.tenor_months} bln · {formatDate(loan.created_at)}</p>
+                <Link to={`/app/pengajuan/${loan.id}`} className="block px-5 py-5 hover:bg-paper-deep">
+                  <div className="flex items-start justify-between gap-3"><p className="font-mono text-[13px] text-ai">{loan.code}</p><StatusBadge status={loan.status} /></div>
+                  <p className="mt-2 text-[16px]">{loan.business.name}</p>
+                  <p className="mt-0.5 text-[13px] text-ink-subtle tabular-nums">{rupiah(loan.amount)} · {loan.tenor_months} bln · {formatDate(loan.created_at)}</p>
                 </Link>
               </li>
             ))}

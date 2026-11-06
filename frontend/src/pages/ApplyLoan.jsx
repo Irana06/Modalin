@@ -1,10 +1,10 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router'
+import { useNavigate } from 'react-router'
 import api, { toast } from '../lib/api'
 import { useAuth } from '../lib/auth'
 import { useApi } from '../lib/useApi'
 import { ACTIVE_STATUSES, MAX_REVENUE_MULTIPLIER, percent, rupiah, schedule, tenorsFor } from '../lib/format'
-import { Button, Card, Field, MoneyInput, PageHeader, Skeleton, inputClass } from '../components/ui'
+import { Button, Card, Eyebrow, Field, LinkButton, MoneyInput, PageHeader, Skeleton, inputClass, selectClass } from '../components/ui'
 
 export default function ApplyLoan() {
   const { user } = useAuth()
@@ -15,19 +15,19 @@ export default function ApplyLoan() {
   const [errors, setErrors] = useState({})
   const [loading, setLoading] = useState(false)
 
-  if (!products.data || !loans.data) return <Skeleton />
+  if (!products.data || !loans.data) return <Card><Skeleton /></Card>
 
   const active = loans.data.data.find((l) => ACTIVE_STATUSES.includes(l.status))
   if (active) {
     return (
       <>
-        <PageHeader title="Ajukan pembiayaan" />
-        <Card className="mt-8 max-w-2xl p-7">
-          <h2 className="text-xl font-bold">Anda masih punya pengajuan yang berjalan</h2>
-          <p className="mt-2 text-ink-muted">
-            Pengajuan <b className="text-ink tabular-nums">{active.code}</b> belum selesai. Pengajuan baru bisa dibuat setelah dana cair atau pengajuan itu ditolak.
+        <PageHeader eyebrow="Pengajuan baru" title="Ajukan pembiayaan" />
+        <Card className="mt-10 max-w-2xl p-6 sm:p-8">
+          <h2 className="text-[22px] font-light tracking-[-0.02em]">Anda masih punya pengajuan yang berjalan</h2>
+          <p className="mt-3 text-[15px] leading-[1.7] text-ink-muted">
+            Pengajuan <span className="font-mono text-[14px] text-ai">{active.code}</span> belum selesai. Pengajuan baru bisa dibuat setelah dana cair atau pengajuan itu ditolak.
           </p>
-          <Link to="/app" className="mt-5 inline-flex min-h-11 items-center rounded-lg bg-ink px-5 font-bold text-surface hover:bg-ink-soft">Lihat status pengajuan</Link>
+          <LinkButton to="/app" className="mt-6">Lihat status pengajuan</LinkButton>
         </Card>
       </>
     )
@@ -71,59 +71,60 @@ export default function ApplyLoan() {
 
   return (
     <>
-      <PageHeader title="Ajukan pembiayaan" text="Pengajuan diperiksa verifikator, lalu diputuskan manajer." />
-      <form onSubmit={submit} noValidate className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-[1.4fr_1fr]">
-        <Card className="grid content-start gap-6 p-6 sm:p-7">
+      <PageHeader eyebrow="Pengajuan baru" title="Ajukan pembiayaan" text="Pengajuan diperiksa verifikator, lalu diputuskan manajer." />
+      <form onSubmit={submit} noValidate className="mt-10 grid grid-cols-1 gap-6 lg:grid-cols-[1.4fr_1fr]">
+        <Card className="grid content-start gap-7 p-6 sm:p-8">
           <fieldset>
-            <legend className="text-sm font-bold">Produk pembiayaan</legend>
-            <div className="mt-3 grid gap-2">
+            <legend className="text-[13px] font-medium">Produk pembiayaan</legend>
+            <div className="mt-3 grid border-t border-line">
               {products.data.map((p) => (
-                <label key={p.id} className="flex min-h-12 cursor-pointer flex-wrap items-center justify-between gap-x-4 rounded-lg border border-line-strong px-4 py-3 hover:border-ink-muted hover:bg-paper has-checked:border-ink has-checked:bg-paper-deep has-focus-visible:outline-2 has-focus-visible:outline-shu-deep">
+                <label key={p.id} className="ink-wash group flex min-h-14 flex-wrap items-center justify-between gap-x-4 border-b border-line px-4 py-3 has-checked:bg-ink has-checked:text-paper has-focus-visible:outline-2 has-focus-visible:outline-ai">
                   <input type="radio" name="product" value={p.id} checked={form.loan_product_id === p.id} onChange={() => update('loan_product_id', p.id)} className="sr-only" />
-                  <span className="font-bold">{p.name}</span>
-                  <span className="text-sm text-ink-muted tabular-nums">{percent(p.interest_rate)} / tahun · {rupiah(p.min_amount)} s.d. {rupiah(p.max_amount)}</span>
+                  <span className="flex items-center gap-3 text-[15px]"><span className="size-2 rounded-full border border-current group-has-checked:bg-ai-light group-has-checked:border-ai-light" />{p.name}</span>
+                  <span className="font-mono text-[12px] text-ink-subtle tabular-nums group-has-checked:text-night-muted [@media(hover:hover)]:group-hover:text-night-muted">{percent(p.interest_rate)} / tahun · {rupiah(p.min_amount)} s.d. {rupiah(p.max_amount)}</span>
                 </label>
               ))}
             </div>
-            {errors.loan_product_id && <p className="mt-2 text-sm text-shu-deep" role="alert">{errors.loan_product_id}</p>}
+            {errors.loan_product_id && <p className="mt-2 text-[13px] text-beni" role="alert">{errors.loan_product_id}</p>}
           </fieldset>
           <Field label="Jumlah pinjaman" error={errors.amount} hint={product ? `Batas produk ini ${rupiah(product.min_amount)} s.d. ${rupiah(product.max_amount)}.` : 'Pilih produk untuk melihat batas jumlah.'}>
             <MoneyInput value={form.amount} onChange={(v) => update('amount', v)} invalid={!!errors.amount} />
           </Field>
           <Field label="Tenor" error={errors.tenor_months}>
-            <select value={form.tenor_months} onChange={(e) => update('tenor_months', e.target.value)} disabled={!product} aria-invalid={!!errors.tenor_months} className={inputClass}>
+            <select value={form.tenor_months} onChange={(e) => update('tenor_months', e.target.value)} disabled={!product} aria-invalid={!!errors.tenor_months} className={selectClass}>
               <option value="">{product ? 'Pilih tenor' : 'Pilih produk dulu'}</option>
               {tenors.map((t) => <option key={t} value={t}>{t} bulan</option>)}
             </select>
           </Field>
           <Field label="Tujuan penggunaan dana" error={errors.purpose} hint={`${form.purpose.trim().length} / minimal 20 karakter`}>
             <textarea rows={4} value={form.purpose} onChange={(e) => update('purpose', e.target.value)} aria-invalid={!!errors.purpose}
-              placeholder="Contoh: menambah stok bahan baku dan membeli kompor kedua untuk pesanan katering." className={`${inputClass} py-3`} />
+              placeholder="Contoh: menambah stok bahan baku dan membeli kompor kedua untuk pesanan katering." className={`${inputClass} h-auto py-3`} />
           </Field>
         </Card>
 
-        <Card className="grid content-start gap-5 self-start p-6 lg:sticky lg:top-6">
+        <Card className="grid content-start gap-6 self-start p-6 sm:p-8 lg:sticky lg:top-8">
           <div>
-            <h2 className="text-lg font-bold">Plafon Anda</h2>
-            <p className="mt-1 text-sm text-ink-muted tabular-nums">Omzet {rupiah(user.business.monthly_revenue)} x 3 = <b className="text-ink">{rupiah(ceiling)}</b></p>
-            <div className="mt-3 h-2.5 overflow-hidden rounded-full bg-paper-deep" role="progressbar" aria-label="Pemakaian plafon"
+            <Eyebrow>Plafon Anda</Eyebrow>
+            <p className="mt-3 text-[28px] leading-none font-light tracking-[-0.03em] tabular-nums">{rupiah(ceiling)}</p>
+            <p className="mt-2 text-[13px] text-ink-subtle tabular-nums">Omzet {rupiah(user.business.monthly_revenue)} x 3</p>
+            <div className="mt-5 h-1 overflow-hidden bg-paper-deep" role="progressbar" aria-label="Pemakaian plafon"
               aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(Math.min(form.amount / ceiling, 1) * 100)}>
-              <div className={`h-full rounded-full transition-all ${over ? 'bg-shu-deep' : 'bg-ink'}`} style={{ width: `${Math.min(form.amount / ceiling, 1) * 100}%` }} />
+              <div className={`h-full transition-[width,background-color] duration-700 ease-out-expo ${over ? 'bg-beni' : 'bg-ai'}`} style={{ width: `${Math.min(form.amount / ceiling, 1) * 100}%` }} />
             </div>
-            <p className="mt-2 text-sm tabular-nums">
+            <p className="mt-3 text-[13px] tabular-nums">
               {!form.amount ? 'Belum ada jumlah.' : over
-                ? <b className="text-shu-deep">Melebihi plafon {rupiah(form.amount - ceiling)}.</b>
-                : <>Sisa plafon <b>{rupiah(ceiling - form.amount)}</b></>}
+                ? <span className="font-medium text-beni">Melebihi plafon {rupiah(form.amount - ceiling)}.</span>
+                : <>Sisa plafon <span className="font-medium">{rupiah(ceiling - form.amount)}</span></>}
             </p>
           </div>
-          <div className="border-t border-line pt-5">
-            <p className="text-sm text-ink-muted">Estimasi cicilan per bulan</p>
-            <p className="mt-1 font-display text-3xl font-bold tabular-nums">{rupiah(preview?.payment ?? 0)}</p>
-            <p className="text-sm text-ink-muted tabular-nums">
+          <div className="border-t border-line pt-6">
+            <Eyebrow>Estimasi cicilan per bulan</Eyebrow>
+            <p key={preview?.payment} className="mt-3 animate-page-in text-[40px] leading-none font-light tracking-[-0.03em] tabular-nums">{rupiah(preview?.payment ?? 0)}</p>
+            <p className="mt-2 text-[13px] text-ink-subtle tabular-nums">
               {preview ? `Total bunga ${rupiah(preview.totalInterest)} selama ${form.tenor_months} bulan` : 'Isi produk, jumlah, dan tenor.'}
             </p>
           </div>
-          <Button type="submit" loading={loading} className="min-h-12">Kirim pengajuan</Button>
+          <Button type="submit" loading={loading} arrow className="justify-between">Kirim pengajuan</Button>
         </Card>
       </form>
     </>
